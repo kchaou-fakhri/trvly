@@ -58,7 +58,6 @@ Before you begin, ensure you have met the following requirements:
 
 ## Screenshots
 
-Include some screenshots of your app here to give users a visual idea of what to expect.
 
 ## Contributing
 
