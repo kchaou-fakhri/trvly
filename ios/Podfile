@@ -38,3 +38,16 @@ target 'trvly' do
     )
   end
 end
+
+// highlight-start
+pre_install do |installer|
+  $RNMapboxMaps.pre_install(installer)
+end
+// highlight-end
+
+post_install do |installer|
+// highlight-start
+  $RNMapboxMaps.post_install(installer)
+// highlight-end
+  # ... other post install hooks
+end

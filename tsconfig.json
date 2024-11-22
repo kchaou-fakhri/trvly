@@ -1,3 +1,22 @@
 {
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "tests": ["__tests__/*"],
+      // "@contexts/*": ["src/contexts/*"],
+      // "@common/*": ["src/common/*"],
+      // "@commonAdapter/*": ["src/common/adapters/*"],
+      // "@commonIsConnected/*": ["src/common/appConfig/*"],
+      // "@navigConfig/*": ["src/navigation/configuration/*"],
+      // "@drawer/*": ["src/navigation/drawer/*"],
+      // "@redux/*": ["src/redux_configuration/*"],
+      // "@styles/*": ["src/styles/*"],
+      "@utils/*": ["src/utils/*"]
+      // "@config/*": ["src/config/*"],
+      // "@assets/*": ["src/assets/*"],
+      // "@helpers/*": ["src/helpers/*"]
+    }
+  },
   "extends": "@react-native/typescript-config/tsconfig.json"
 }
