@@ -3,7 +3,9 @@
 <plist version="1.0">
 	<dict>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Show current location on map.</string>
+		<string>Your location is used for...</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>Your location is used for...</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>en</string>
 		<key>CFBundleDisplayName</key>

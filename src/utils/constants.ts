@@ -1,5 +1,5 @@
 export const CONSTANTS = {
   MAPBOX: {
-    URL_STYLE: 'mapbox://styles/mapbox/streets-v11',
+    URL_STYLE: 'mapbox://styles/mapbox/outdoors-v12',
   },
 };

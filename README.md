@@ -1,4 +1,3 @@
-
 ## About the App
 
 This application displays the location of historical places. It uses React Native and various libraries to provide an interactive map and detailed information about each historical site.
@@ -58,7 +57,6 @@ Before you begin, ensure you have met the following requirements:
 
 ## Screenshots
 
-
 ## Contributing
 
 Contributions are always welcome! Please read the [contribution guidelines](CONTRIBUTING.md) first.
@@ -66,4 +64,3 @@ Contributions are always welcome! Please read the [contribution guidelines](CONT
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
