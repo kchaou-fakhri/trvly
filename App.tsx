@@ -1,40 +1,22 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, View} from 'react-native';
-import Mapbox from '@rnmapbox/maps';
-import {API_KEY} from '@env';
-import {CONSTANTS} from '@utils/constants';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 
-Mapbox.setAccessToken(API_KEY);
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {HomeScreen} from './src/screens/HomeScreen';
+import {TrvlyMapView} from './src/screens/TravlyMapView';
 
 const App = () => {
-  useEffect(() => {}, []);
+  const Stack = createNativeStackNavigator();
 
   return (
-    <View style={styles.page}>
-      <View style={styles.container}>
-        <Mapbox.MapView
-          style={styles.map}
-          zoomEnabled={true}
-          styleURL={CONSTANTS.MAPBOX.URL_STYLE}
-        />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="TrvlyMapView">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="TrvlyMapView" component={TrvlyMapView} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    height: '100%',
-    width: '100%',
-  },
-  map: {
-    flex: 1,
-  },
-});
