@@ -8,6 +8,7 @@ import Mapbox, {
   ShapeSource,
   SymbolLayer,
   Images,
+  CircleLayer,
 } from '@rnmapbox/maps';
 import {API_KEY} from '@env';
 import {
@@ -60,7 +61,7 @@ export const TrvlyMapView: React.FC = () => {
     <View style={styles.page}>
       <View style={styles.container}>
         <MapView style={styles.map} zoomEnabled={true}>
-          <Camera followZoomLevel={1} followUserLocation />
+          <Camera followZoomLevel={4} followUserLocation />
           <LocationPuck
             puckBearingEnabled
             puckBearing="heading"
@@ -68,9 +69,26 @@ export const TrvlyMapView: React.FC = () => {
           />
           <UserLocation />
 
-          <ShapeSource id="symbolLocationSource" shape={_featureCollection}>
+          <ShapeSource
+            id="symbolLocationSource"
+            cluster
+            onPress={e => console.log(e)}
+            shape={_featureCollection}>
+            <CircleLayer
+              id="clusteredPoints"
+              sourceLayerID="symbolLocationSource"
+              filter={['has', 'point_count']}
+              style={{
+                circleColor: 'red',
+                circleRadius: 30,
+                circleStrokeWidth: 1,
+                circleOpacity: 0.6,
+                circleStrokeColor: 'white',
+              }}
+            />
             <SymbolLayer
               id="symbolLocationSymbols"
+              filter={['!', ['has', 'point_count']]}
               minZoomLevel={1}
               style={{
                 iconImage: 'icon',
