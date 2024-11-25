@@ -1,21 +1,13 @@
-import React, {useEffect} from 'react';
-import {SafeAreaView, StyleSheet, View} from 'react-native';
-
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {NavigationContainer} from '@react-navigation/native';
-import {HomeScreen} from './src/screens/HomeScreen';
-import {TrvlyMapView} from './src/screens/TravlyMapView';
+import {MainNavigation} from '@navigConfig/MainNavigation';
+import {GlobalStyle} from '@utils/GlobalStyle';
+import React from 'react';
+import {SafeAreaView} from 'react-native';
 
 const App = () => {
-  const Stack = createNativeStackNavigator();
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="TrvlyMapView">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="TrvlyMapView" component={TrvlyMapView} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={GlobalStyle.container}>
+      <MainNavigation />
+    </SafeAreaView>
   );
 };
 
