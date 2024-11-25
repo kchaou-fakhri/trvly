@@ -1,6 +1,6 @@
 import {Point} from '@model/index';
 
-export const tunisiaPlaces: Point[] = [
+export const TunisiaPlaces: Point[] = [
   {
     latitude: 36.86,
     longitude: 10.33,

@@ -8,6 +8,7 @@ import Mapbox, {
   ShapeSource,
   SymbolLayer,
   Images,
+  CircleLayer,
 } from '@rnmapbox/maps';
 import {API_KEY} from '@env';
 import {
@@ -19,6 +20,7 @@ import {
 } from 'react-native-permissions';
 import {IMAGES} from '@assets/img';
 import {feature, featureCollection, point} from '@turf/turf';
+import {TunisiaPlaces} from '../../data/TemproryData';
 
 export const TrvlyMapView: React.FC = () => {
   Mapbox.setAccessToken(API_KEY);
@@ -26,6 +28,10 @@ export const TrvlyMapView: React.FC = () => {
 
   const [locationPermission, setLocationPermission] =
     useState<PermissionStatus | null>(null);
+
+  const _featureCollection = featureCollection(
+    TunisiaPlaces.map(place => point([place.longitude, place.latitude])),
+  );
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -55,7 +61,7 @@ export const TrvlyMapView: React.FC = () => {
     <View style={styles.page}>
       <View style={styles.container}>
         <MapView style={styles.map} zoomEnabled={true}>
-          <Camera followZoomLevel={1} followUserLocation />
+          <Camera followZoomLevel={4} followUserLocation />
           <LocationPuck
             puckBearingEnabled
             puckBearing="heading"
@@ -65,14 +71,31 @@ export const TrvlyMapView: React.FC = () => {
 
           <ShapeSource
             id="symbolLocationSource"
-            shape={featureCollection([
-              point([10.33, 36.86]),
-              point([10.17, 36.8]),
-            ])}>
+            cluster
+            onPress={e => console.log(e)}
+            shape={_featureCollection}>
+            <CircleLayer
+              id="clusteredPoints"
+              sourceLayerID="symbolLocationSource"
+              filter={['has', 'point_count']}
+              style={{
+                circleColor: 'red',
+                circleRadius: 30,
+                circleStrokeWidth: 1,
+                circleOpacity: 0.6,
+                circleStrokeColor: 'white',
+              }}
+            />
             <SymbolLayer
               id="symbolLocationSymbols"
+              filter={['!', ['has', 'point_count']]}
               minZoomLevel={1}
-              style={{iconImage: 'icon'}}
+              style={{
+                iconImage: 'icon',
+                iconSize: 0.3,
+                iconAllowOverlap: true,
+                iconAnchor: 'center',
+              }}
             />
           </ShapeSource>
           <Images images={{icon: IMAGES.Point}} />
