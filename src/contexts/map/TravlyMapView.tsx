@@ -19,6 +19,7 @@ import {
 } from 'react-native-permissions';
 import {IMAGES} from '@assets/img';
 import {feature, featureCollection, point} from '@turf/turf';
+import {TunisiaPlaces} from '../../data/TemproryData';
 
 export const TrvlyMapView: React.FC = () => {
   Mapbox.setAccessToken(API_KEY);
@@ -26,6 +27,10 @@ export const TrvlyMapView: React.FC = () => {
 
   const [locationPermission, setLocationPermission] =
     useState<PermissionStatus | null>(null);
+
+  const _featureCollection = featureCollection(
+    TunisiaPlaces.map(place => point([place.longitude, place.latitude])),
+  );
 
   useEffect(() => {
     const requestLocationPermission = async () => {
@@ -63,16 +68,16 @@ export const TrvlyMapView: React.FC = () => {
           />
           <UserLocation />
 
-          <ShapeSource
-            id="symbolLocationSource"
-            shape={featureCollection([
-              point([10.33, 36.86]),
-              point([10.17, 36.8]),
-            ])}>
+          <ShapeSource id="symbolLocationSource" shape={_featureCollection}>
             <SymbolLayer
               id="symbolLocationSymbols"
               minZoomLevel={1}
-              style={{iconImage: 'icon'}}
+              style={{
+                iconImage: 'icon',
+                iconSize: 0.3,
+                iconAllowOverlap: true,
+                iconAnchor: 'center',
+              }}
             />
           </ShapeSource>
           <Images images={{icon: IMAGES.Point}} />
