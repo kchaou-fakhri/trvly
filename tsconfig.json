@@ -4,17 +4,18 @@
     "baseUrl": ".",
     "paths": {
       "tests": ["__tests__/*"],
-      // "@contexts/*": ["src/contexts/*"],
+      "@contexts/*": ["src/contexts/*"],
       // "@common/*": ["src/common/*"],
       // "@commonAdapter/*": ["src/common/adapters/*"],
       // "@commonIsConnected/*": ["src/common/appConfig/*"],
-      // "@navigConfig/*": ["src/navigation/configuration/*"],
+      "@navigConfig/*": ["src/navigation/*"],
       // "@drawer/*": ["src/navigation/drawer/*"],
       // "@redux/*": ["src/redux_configuration/*"],
       // "@styles/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@model/*": ["src/model/*"],
       // "@config/*": ["src/config/*"],
-      // "@assets/*": ["src/assets/*"],
+      "@assets/*": ["src/assets/*"]
       // "@helpers/*": ["src/helpers/*"]
     }
   },

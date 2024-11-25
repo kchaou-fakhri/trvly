@@ -1,11 +1,13 @@
 import {Platform, StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {CONSTANTS} from '@utils/constants';
 import Mapbox, {
   MapView,
   LocationPuck,
   Camera,
   UserLocation,
+  ShapeSource,
+  SymbolLayer,
+  Images,
 } from '@rnmapbox/maps';
 import {API_KEY} from '@env';
 import {
@@ -15,6 +17,8 @@ import {
   RESULTS,
   PermissionStatus,
 } from 'react-native-permissions';
+import {IMAGES} from '@assets/img';
+import {feature, featureCollection, point} from '@turf/turf';
 
 export const TrvlyMapView: React.FC = () => {
   Mapbox.setAccessToken(API_KEY);
@@ -46,17 +50,32 @@ export const TrvlyMapView: React.FC = () => {
       </View>
     );
   }
+
   return (
     <View style={styles.page}>
       <View style={styles.container}>
         <MapView style={styles.map} zoomEnabled={true}>
-          <Camera followZoomLevel={12} followUserLocation />
+          <Camera followZoomLevel={1} followUserLocation />
           <LocationPuck
             puckBearingEnabled
             puckBearing="heading"
             pulsing={{isEnabled: true}}
           />
           <UserLocation />
+
+          <ShapeSource
+            id="symbolLocationSource"
+            shape={featureCollection([
+              point([10.33, 36.86]),
+              point([10.17, 36.8]),
+            ])}>
+            <SymbolLayer
+              id="symbolLocationSymbols"
+              minZoomLevel={1}
+              style={{iconImage: 'icon'}}
+            />
+          </ShapeSource>
+          <Images images={{icon: IMAGES.Point}} />
         </MapView>
       </View>
     </View>
@@ -75,5 +94,9 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
 });
