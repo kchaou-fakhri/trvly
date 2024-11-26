@@ -80,7 +80,7 @@ export const TrvlyMapView: React.FC = () => {
               filter={['has', 'point_count']}
               style={{
                 circleColor: 'red',
-                circleRadius: 30,
+                circleRadius: 20,
                 circleStrokeWidth: 1,
                 circleOpacity: 0.6,
                 circleStrokeColor: 'white',
