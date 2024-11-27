@@ -11,7 +11,9 @@ export const MainNavigation = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={Routes.TrvlyMapView}>
+      <Stack.Navigator
+        initialRouteName={Routes.TrvlyMapView}
+        screenOptions={{headerShown: false}}>
         <Stack.Screen name={Routes.Home} component={HomeScreen} />
         <Stack.Screen name={Routes.TrvlyMapView} component={TrvlyMapView} />
       </Stack.Navigator>

@@ -41,4 +41,8 @@ export const TunisiaPlaces: Point[] = [
     latitude: 36.7988,
     longitude: 10.1799,
   },
+  {
+    latitude: 10.707031,
+    longitude: 35.296013,
+  },
 ];

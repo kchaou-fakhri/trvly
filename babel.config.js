@@ -27,7 +27,10 @@ module.exports = {
           // '@drawer': './src/navigation/drawer',
           // '@redux': './src/redux_configuration',
           // '@styles': './src/styles',
-          '@utils': './src/utils/',
+          '@trvlyUtils': './src/utils/',
+          '@components': './src/components/',
+          '@services': './src/services/',
+
           '@model': './src/model/',
           '@assets': './src/assets/',
           // '@config': './src/config/',
