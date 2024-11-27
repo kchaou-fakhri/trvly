@@ -12,10 +12,12 @@
       // "@drawer/*": ["src/navigation/drawer/*"],
       // "@redux/*": ["src/redux_configuration/*"],
       // "@styles/*": ["src/styles/*"],
-      "@utils/*": ["src/utils/*"],
+      "@trvlyUtils/*": ["src/utils/*"],
+      "@components/*": ["src/components/*"],
       "@model/*": ["src/model/*"],
       // "@config/*": ["src/config/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@services/*": ["src/services/*"]
       // "@helpers/*": ["src/helpers/*"]
     }
   },
