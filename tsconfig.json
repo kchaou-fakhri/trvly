@@ -17,7 +17,9 @@
       "@model/*": ["src/model/*"],
       // "@config/*": ["src/config/*"],
       "@assets/*": ["src/assets/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@hooks/*": ["src/hooks/*"]
+
       // "@helpers/*": ["src/helpers/*"]
     }
   },
