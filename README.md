@@ -21,7 +21,7 @@ Before you begin, ensure you have met the following requirements:
 
 1. Clone the repository:
    ```bash
-   [https://github.com/kchaou-fakhri/trvly.git] https://github.com/kchaou-fakhri/trvly.git
+   https://github.com/kchaou-fakhri/trvly.git
    ```
 2. Navigate to the project directory:
    ```bash
