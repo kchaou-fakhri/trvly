@@ -25,7 +25,7 @@ Before you begin, ensure you have met the following requirements:
    ```
 2. Navigate to the project directory:
    ```bash
-   cd your-repo-name
+   cd trvly
    ```
 3. Install the dependencies:
    ```bash
