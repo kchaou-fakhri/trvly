@@ -1,40 +1,30 @@
-import {Button, Platform, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Mapbox, {
   MapView,
   LocationPuck,
   Camera,
   UserLocation,
-  ShapeSource,
-  SymbolLayer,
   Images,
-  CircleLayer,
-  LineLayer,
+  Location,
 } from '@rnmapbox/maps';
 import {API_KEY} from '@env';
-import {
-  request,
-  PERMISSIONS,
-  RESULTS,
-  PermissionStatus,
-} from 'react-native-permissions';
 import {IMAGES} from '@assets/img';
-import {feature, featureCollection, point} from '@turf/turf';
+import {featureCollection, point} from '@turf/turf';
 import {TunisiaPlaces} from '../../data/TemproryData';
-import Routes from '../../data/Routes.json';
 import {Point, FeatureCollection} from 'geojson';
-import {COLORES} from '@trvlyUtils/Colors';
-import {NavigationButton} from '@components/index';
+import {LinePath, Marker, NavigationButton} from '@components/index';
 import {MapBoxService} from '@services/index';
 import {Path} from '@model/index';
+import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent';
+import {useLocationPermission} from '@hooks/usePermission';
 
 export const TrvlyMapView: React.FC = () => {
   Mapbox.setAccessToken(API_KEY);
   Mapbox.setTelemetryEnabled(false);
   const serviceMapBoxInstance = MapBoxService.getInstance();
 
-  const [locationPermission, setLocationPermission] =
-    useState<PermissionStatus | null>(null);
+  const [location, setLocation] = useState<Location>();
 
   const [_featureCollection, setFeatureCollection] =
     useState<FeatureCollection<Point>>();
@@ -42,11 +32,34 @@ export const TrvlyMapView: React.FC = () => {
   const [cameraZoom, setCameraZoom] = useState(8);
   const [path, setPath] = useState<Path>();
 
+  const locationPermission = useLocationPermission();
+
   useEffect(() => {
+    if (locationPermission) {
+      console.log(`Permission status: ${locationPermission}`);
+    }
+  }, [locationPermission]);
+
+  useEffect(() => {
+    setFeatureCollection(
+      featureCollection(
+        TunisiaPlaces.map(place => point([place.longitude, place.latitude])),
+      ),
+    );
+  }, []);
+
+  const handleNavigation = (event: OnPressEvent) => {
+    if (!location) return;
     serviceMapBoxInstance
       .getMapBoxNavigationPath(
-        {longitude: 11.068243, latitude: 35.503681},
-        {longitude: 10.705082, latitude: 35.29619},
+        {
+          longitude: location?.coords.longitude!!,
+          latitude: location?.coords.latitude!!,
+        },
+        {
+          longitude: event.coordinates.longitude,
+          latitude: event.coordinates.latitude,
+        },
       )
       .then(data => {
         setPath({
@@ -58,54 +71,14 @@ export const TrvlyMapView: React.FC = () => {
           },
         });
       });
-  }, []);
-  useEffect(() => {
-    setFeatureCollection(
-      featureCollection(
-        TunisiaPlaces.map(place => point([place.longitude, place.latitude])),
-      ),
-    );
-  }, []);
-
-  useEffect(() => {
-    const requestLocationPermission = async () => {
-      if (Platform.OS === 'android') {
-        const status = await request(PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION);
-        setLocationPermission(status);
-      } else if (Platform.OS === 'ios') {
-        const status = await request(PERMISSIONS.IOS.LOCATION_WHEN_IN_USE);
-        setLocationPermission(status);
-      }
-    };
-
-    requestLocationPermission();
-  }, []);
-
-  const handleNavigation = () => {
-    setFeatureCollection(
-      featureCollection([
-        point([
-          Routes.waypoints[0].location[0],
-          Routes.waypoints[0].location[1],
-        ]),
-        point([
-          Routes.waypoints[1].location[0],
-          Routes.waypoints[1].location[1],
-        ]),
-      ]),
-    );
-    setCameraZoom(14);
+    setCameraZoom(8);
   };
 
-  if (locationPermission !== RESULTS.GRANTED) {
-    return (
-      <View>
-        <Text>
-          Location permission is required to show your location on the map.
-        </Text>
-      </View>
-    );
-  }
+  const handleRequestPermission = async () => {};
+
+  useEffect(() => {
+    console.log(locationPermission);
+  }, [locationPermission]);
 
   return !_featureCollection?.features.length ? null : (
     <>
@@ -113,64 +86,24 @@ export const TrvlyMapView: React.FC = () => {
         <View style={styles.container}>
           <MapView style={styles.map} zoomEnabled={true}>
             <Camera followZoomLevel={cameraZoom} followUserLocation />
+
             <LocationPuck
               puckBearingEnabled
               puckBearing="heading"
               pulsing={{isEnabled: true}}
             />
+            <Marker
+              handleNavigation={handleNavigation}
+              featureCollection={_featureCollection}
+            />
 
-            <ShapeSource
-              id="symbolLocationSource"
-              cluster
-              onPress={e => console.log(e)}
-              shape={_featureCollection}>
-              {_featureCollection?.features.length > 1 ? (
-                <>
-                  <CircleLayer
-                    id="clusteredPoints"
-                    sourceLayerID="symbolLocationSource"
-                    filter={['has', 'point_count']}
-                    style={{
-                      circleColor: 'red',
-                      circleRadius: 20,
-                      circleStrokeWidth: 1,
-                      circleOpacity: 0.6,
-                      circleStrokeColor: 'white',
-                    }}
-                  />
-                </>
-              ) : (
-                <></>
-              )}
-
-              <SymbolLayer
-                id="symbolLocationSymbols"
-                minZoomLevel={1}
-                style={{
-                  iconImage: 'icon',
-                  iconSize: 0.3,
-                  iconAllowOverlap: true,
-                  iconAnchor: 'center',
-                }}
-              />
-            </ShapeSource>
-            <ShapeSource id="line-source" lineMetrics={true} shape={path}>
-              <LineLayer
-                id="line-layer"
-                style={{
-                  lineColor: COLORES.Primary,
-                  lineCap: 'round',
-                  lineJoin: 'round',
-                  lineWidth: 3,
-                }}
-              />
-            </ShapeSource>
+            <LinePath path={path!!} />
             <Images images={{icon: IMAGES.Point}} />
 
-            <UserLocation />
+            <UserLocation onUpdate={location => setLocation(location)} />
           </MapView>
         </View>
-        <NavigationButton text="Navigate" onClick={handleNavigation} />
+        <NavigationButton text="Navigate" onClick={() => handleNavigation} />
       </View>
     </>
   );

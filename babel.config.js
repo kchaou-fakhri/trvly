@@ -30,8 +30,8 @@ module.exports = {
           '@trvlyUtils': './src/utils/',
           '@components': './src/components/',
           '@services': './src/services/',
-
           '@model': './src/model/',
+          '@hooks': './src/hooks/',
           '@assets': './src/assets/',
           // '@config': './src/config/',
           // '@helpers': './src/helpers/',
