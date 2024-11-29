@@ -1,9 +1,12 @@
 import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import {TrvlyCity} from '@model/index';
+import {COLORES} from '@trvlyUtils/Colors';
 
 interface Props {
   display: Boolean;
+  selectedMarker: TrvlyCity | undefined;
   onBottomSheetClose: () => void;
 }
 
@@ -20,6 +23,9 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
   };
 
   useEffect(() => {
+    console.log('City details: ', props.selectedMarker?.name);
+  }, [props.selectedMarker]);
+  useEffect(() => {
     if (props.display) {
       bottomSheetRef.current?.expand();
     }
@@ -32,7 +38,14 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
       enablePanDownToClose
       onChange={index => handleSheetChanges(index)}>
       <BottomSheetView style={styles.contentContainer}>
-        <Text style={{height: 180}}>Awesome 🎉</Text>
+        <Text style={{height: 180}}>
+          Awesome you are in{' '}
+          <Text
+            style={{fontSize: 15, fontWeight: 'bold', color: COLORES.Primary}}>
+            {props.selectedMarker?.name}
+          </Text>{' '}
+          🎉
+        </Text>
       </BottomSheetView>
     </BottomSheet>
   );

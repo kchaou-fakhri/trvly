@@ -1,48 +1,60 @@
-import {Point} from '@model/index';
+import {TrvlyCity} from '@model/index';
 
-export const TunisiaPlaces: Point[] = [
+export const Places: TrvlyCity[] = [
   {
-    latitude: 36.86,
-    longitude: 10.33,
-  },
-
-  {
-    latitude: 36.8,
-    longitude: 10.17,
-  },
-  {
-    latitude: 36.798,
-    longitude: 10.17,
-  },
-
-  {
-    latitude: 36.8641,
-    longitude: 10.3294,
-  },
-
-  {
-    latitude: 33.4682,
-    longitude: 9.0574,
+    name: 'Pyramids of Giza',
+    country: 'Egypt',
+    description:
+      'The iconic pyramids built during the Old Kingdom of ancient Egypt, considered one of the Seven Wonders of the Ancient World.',
+    point: {latitude: 31.1342, longitude: 29.9792},
+    details: {
+      year_built: '2560 BC',
+      type: 'Historical Landmark',
+    },
   },
   {
-    latitude: 33.9197,
-    longitude: 8.1297,
+    name: 'Amphitheater of El Jem',
+    country: 'Tunisia',
+    description:
+      'A well-preserved Roman amphitheater in the town of El Jem, showcasing the grandeur of Roman architecture.',
+    point: {latitude: 35.2968, longitude: 10.7062},
+    details: {
+      year_built: '238 AD',
+      type: 'Historical Landmark',
+    },
   },
   {
-    latitude: 33.8684,
-    longitude: 10.8499,
+    name: 'Al-Qarawiyyin Mosque',
+    country: 'Morocco',
+    description:
+      'One of the oldest universities in the world, also functioning as a mosque and cultural hub in Fez.',
+    point: {latitude: 34.0654, longitude: -4.9781},
+    details: {
+      year_built: 'null',
+      year_established: '859 AD',
+      type: 'Religious and Educational',
+    },
   },
-
   {
-    latitude: 35.2706,
-    longitude: 10.702,
+    name: 'Petra',
+    country: 'Jordan',
+    description:
+      "An ancient city carved into rose-red sandstone cliffs, known as the 'Rose City.'",
+    point: {latitude: 35.4444, longitude: 30.3285},
+    details: {
+      year_built: '312 BC',
+      type: 'Archaeological Site',
+    },
   },
   {
-    latitude: 36.7988,
-    longitude: 10.1799,
-  },
-  {
-    latitude: 10.707031,
-    longitude: 35.296013,
+    name: 'Djemaa el-Fna',
+    country: 'Morocco',
+    description:
+      'A bustling square and marketplace in Marrakesh, offering food, entertainment, and cultural experiences.',
+    point: {latitude: 31.6258, longitude: -7.9893},
+    details: {
+      year_built: '11th century',
+      type: 'Cultural Hub',
+    },
   },
 ];

@@ -11,11 +11,11 @@ import Mapbox, {
 import {API_KEY} from '@env';
 import {IMAGES} from '@assets/img';
 import {featureCollection, point} from '@turf/turf';
-import {TunisiaPlaces} from '../../data/TemproryData';
+import {Places} from '../../data/TemproryData';
 import {Point, FeatureCollection} from 'geojson';
 import {NavigationButton} from '@components/index';
 import {MapBoxService} from '@services/index';
-import {Path} from '@model/index';
+import {Path, TrvlyCity} from '@model/index';
 import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent';
 import {useLocationPermission} from '@hooks/usePermission';
 import {TrvlyPermissionStatus} from '@trvlyUtils/constants';
@@ -28,58 +28,63 @@ export const TrvlyMapView: React.FC = () => {
   Mapbox.setTelemetryEnabled(false);
   const serviceMapBoxInstance = MapBoxService.getInstance();
 
+  // Use state
   const [location, setLocation] = useState<Location>();
-
+  const [selectedMarker, setSelectedMarker] = useState<TrvlyCity>();
   const [_featureCollection, setFeatureCollection] =
     useState<FeatureCollection<Point>>();
-
   const [cameraZoom, setCameraZoom] = useState(8);
   const [path, setPath] = useState<Path>();
   const [dislpayDetails, setDisplayDetails] = useState<Boolean | null>(null);
 
+  // handle permission
   let locationPermission = useLocationPermission();
-
-  useEffect(() => {
-    if (locationPermission) {
-      console.log(`Permission status: ${locationPermission}`);
-    }
-  }, [locationPermission]);
 
   useEffect(() => {
     setFeatureCollection(
       featureCollection(
-        TunisiaPlaces.map(place => point([place.longitude, place.latitude])),
+        Places.map(place =>
+          point([place.point.longitude, place.point.latitude]),
+        ),
       ),
     );
   }, []);
 
   const handleNavigation = (event: OnPressEvent) => {
     if (!location) return;
+
     setDisplayDetails(true);
 
-    console.log(location);
-    serviceMapBoxInstance
-      .getMapBoxNavigationPath(
-        {
-          longitude: location?.coords.longitude!!,
-          latitude: location?.coords.latitude!!,
-        },
-        {
-          longitude: event.coordinates.longitude,
-          latitude: event.coordinates.latitude,
-        },
-      )
-      .then(data => {
-        setPath({
-          properties: {},
-          type: 'Feature',
-          geometry: {
-            type: 'LineString',
-            coordinates: data.routes[0].geometry.coordinates,
-          },
-        });
-      });
-    setCameraZoom(6);
+    setSelectedMarker(
+      Places.filter(
+        place =>
+          event.features[0].geometry.coordinates[0].toString().charAt(4) ==
+          place.point.longitude.toString().charAt(4),
+      )[0],
+    );
+
+    // serviceMapBoxInstance
+    //   .getMapBoxNavigationPath(
+    //     {
+    //       longitude: location?.coords.longitude!!,
+    //       latitude: location?.coords.latitude!!,
+    //     },
+    //     {
+    //       longitude: event.coordinates.longitude,
+    //       latitude: event.coordinates.latitude,
+    //     },
+    //   )
+    //   .then(data => {
+    //     setPath({
+    //       properties: {},
+    //       type: 'Feature',
+    //       geometry: {
+    //         type: 'LineString',
+    //         coordinates: data.routes[0].geometry.coordinates,
+    //       },
+    //     });
+    //   });
+    // setCameraZoom(6);
   };
 
   const handleRequestPermission = async () => {};
@@ -96,7 +101,7 @@ export const TrvlyMapView: React.FC = () => {
         <View style={styles.page}>
           <View style={styles.container}>
             <MapView style={styles.map} zoomEnabled={true}>
-              <Camera followZoomLevel={cameraZoom} followUserLocation />
+              <Camera followUserLocation followZoomLevel={cameraZoom} />
 
               <LocationPuck
                 puckBearingEnabled
@@ -117,6 +122,7 @@ export const TrvlyMapView: React.FC = () => {
           <NavigationButton text="Navigate" onClick={() => handleNavigation} />
           {dislpayDetails && (
             <DetailsBottomSheet
+              selectedMarker={selectedMarker}
               display={dislpayDetails}
               onBottomSheetClose={() => {
                 setDisplayDetails(false);

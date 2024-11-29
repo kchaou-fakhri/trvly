@@ -5,7 +5,7 @@ import {
   UserLocation,
 } from '@rnmapbox/maps';
 import React from 'react';
-import {FeatureCollection} from '@turf/turf';
+import {FeatureCollection} from 'geojson';
 import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent';
 
 interface MarkerProps {
