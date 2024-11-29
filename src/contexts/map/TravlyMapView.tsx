@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Mapbox, {
   MapView,
@@ -13,11 +13,15 @@ import {IMAGES} from '@assets/img';
 import {featureCollection, point} from '@turf/turf';
 import {TunisiaPlaces} from '../../data/TemproryData';
 import {Point, FeatureCollection} from 'geojson';
-import {LinePath, Marker, NavigationButton} from '@components/index';
+import {NavigationButton} from '@components/index';
 import {MapBoxService} from '@services/index';
 import {Path} from '@model/index';
 import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent';
 import {useLocationPermission} from '@hooks/usePermission';
+import {TrvlyPermissionStatus} from '@trvlyUtils/constants';
+import {Marker} from './components/Marker';
+import {LinePath} from './components/LinePath';
+import {DetailsBottomSheet} from './components/DetailsBottomSheet';
 
 export const TrvlyMapView: React.FC = () => {
   Mapbox.setAccessToken(API_KEY);
@@ -31,8 +35,9 @@ export const TrvlyMapView: React.FC = () => {
 
   const [cameraZoom, setCameraZoom] = useState(8);
   const [path, setPath] = useState<Path>();
+  const [dislpayDetails, setDisplayDetails] = useState<Boolean | null>(null);
 
-  const locationPermission = useLocationPermission();
+  let locationPermission = useLocationPermission();
 
   useEffect(() => {
     if (locationPermission) {
@@ -50,6 +55,9 @@ export const TrvlyMapView: React.FC = () => {
 
   const handleNavigation = (event: OnPressEvent) => {
     if (!location) return;
+    setDisplayDetails(true);
+
+    console.log(location);
     serviceMapBoxInstance
       .getMapBoxNavigationPath(
         {
@@ -71,7 +79,7 @@ export const TrvlyMapView: React.FC = () => {
           },
         });
       });
-    setCameraZoom(8);
+    setCameraZoom(6);
   };
 
   const handleRequestPermission = async () => {};
@@ -80,31 +88,43 @@ export const TrvlyMapView: React.FC = () => {
     console.log(locationPermission);
   }, [locationPermission]);
 
-  return !_featureCollection?.features.length ? null : (
+  return (
     <>
-      <View style={styles.page}>
-        <View style={styles.container}>
-          <MapView style={styles.map} zoomEnabled={true}>
-            <Camera followZoomLevel={cameraZoom} followUserLocation />
+      {locationPermission == TrvlyPermissionStatus.DENIED || null ? (
+        <Text>Hello</Text>
+      ) : !_featureCollection?.features.length ? null : (
+        <View style={styles.page}>
+          <View style={styles.container}>
+            <MapView style={styles.map} zoomEnabled={true}>
+              <Camera followZoomLevel={cameraZoom} followUserLocation />
 
-            <LocationPuck
-              puckBearingEnabled
-              puckBearing="heading"
-              pulsing={{isEnabled: true}}
+              <LocationPuck
+                puckBearingEnabled
+                puckBearing="heading"
+                pulsing={{isEnabled: true}}
+              />
+              <Marker
+                handleNavigation={handleNavigation}
+                featureCollection={_featureCollection}
+              />
+
+              <LinePath path={path!!} />
+              <Images images={{icon: IMAGES.Point}} />
+
+              <UserLocation onUpdate={location => setLocation(location)} />
+            </MapView>
+          </View>
+          <NavigationButton text="Navigate" onClick={() => handleNavigation} />
+          {dislpayDetails && (
+            <DetailsBottomSheet
+              display={dislpayDetails}
+              onBottomSheetClose={() => {
+                setDisplayDetails(false);
+              }}
             />
-            <Marker
-              handleNavigation={handleNavigation}
-              featureCollection={_featureCollection}
-            />
-
-            <LinePath path={path!!} />
-            <Images images={{icon: IMAGES.Point}} />
-
-            <UserLocation onUpdate={location => setLocation(location)} />
-          </MapView>
+          )}
         </View>
-        <NavigationButton text="Navigate" onClick={() => handleNavigation} />
-      </View>
+      )}
     </>
   );
 };
