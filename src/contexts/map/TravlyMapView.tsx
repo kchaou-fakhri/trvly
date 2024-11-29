@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Mapbox, {
   MapView,
@@ -11,67 +11,80 @@ import Mapbox, {
 import {API_KEY} from '@env';
 import {IMAGES} from '@assets/img';
 import {featureCollection, point} from '@turf/turf';
-import {TunisiaPlaces} from '../../data/TemproryData';
+import {Places} from '../../data/TemproryData';
 import {Point, FeatureCollection} from 'geojson';
-import {LinePath, Marker, NavigationButton} from '@components/index';
+import {NavigationButton} from '@components/index';
 import {MapBoxService} from '@services/index';
-import {Path} from '@model/index';
+import {Path, TrvlyCity} from '@model/index';
 import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent';
 import {useLocationPermission} from '@hooks/usePermission';
+import {TrvlyPermissionStatus} from '@trvlyUtils/constants';
+import {Marker} from './components/Marker';
+import {LinePath} from './components/LinePath';
+import {DetailsBottomSheet} from './components/DetailsBottomSheet';
 
 export const TrvlyMapView: React.FC = () => {
   Mapbox.setAccessToken(API_KEY);
   Mapbox.setTelemetryEnabled(false);
   const serviceMapBoxInstance = MapBoxService.getInstance();
 
+  // Use state
   const [location, setLocation] = useState<Location>();
-
+  const [selectedMarker, setSelectedMarker] = useState<TrvlyCity>();
   const [_featureCollection, setFeatureCollection] =
     useState<FeatureCollection<Point>>();
-
   const [cameraZoom, setCameraZoom] = useState(8);
   const [path, setPath] = useState<Path>();
+  const [dislpayDetails, setDisplayDetails] = useState<Boolean | null>(null);
 
-  const locationPermission = useLocationPermission();
-
-  useEffect(() => {
-    if (locationPermission) {
-      console.log(`Permission status: ${locationPermission}`);
-    }
-  }, [locationPermission]);
+  // handle permission
+  let locationPermission = useLocationPermission();
 
   useEffect(() => {
     setFeatureCollection(
       featureCollection(
-        TunisiaPlaces.map(place => point([place.longitude, place.latitude])),
+        Places.map(place =>
+          point([place.point.longitude, place.point.latitude]),
+        ),
       ),
     );
   }, []);
 
   const handleNavigation = (event: OnPressEvent) => {
     if (!location) return;
-    serviceMapBoxInstance
-      .getMapBoxNavigationPath(
-        {
-          longitude: location?.coords.longitude!!,
-          latitude: location?.coords.latitude!!,
-        },
-        {
-          longitude: event.coordinates.longitude,
-          latitude: event.coordinates.latitude,
-        },
-      )
-      .then(data => {
-        setPath({
-          properties: {},
-          type: 'Feature',
-          geometry: {
-            type: 'LineString',
-            coordinates: data.routes[0].geometry.coordinates,
-          },
-        });
-      });
-    setCameraZoom(8);
+
+    setDisplayDetails(true);
+
+    setSelectedMarker(
+      Places.filter(
+        place =>
+          event.features[0].geometry.coordinates[0].toString().charAt(4) ==
+          place.point.longitude.toString().charAt(4),
+      )[0],
+    );
+
+    // serviceMapBoxInstance
+    //   .getMapBoxNavigationPath(
+    //     {
+    //       longitude: location?.coords.longitude!!,
+    //       latitude: location?.coords.latitude!!,
+    //     },
+    //     {
+    //       longitude: event.coordinates.longitude,
+    //       latitude: event.coordinates.latitude,
+    //     },
+    //   )
+    //   .then(data => {
+    //     setPath({
+    //       properties: {},
+    //       type: 'Feature',
+    //       geometry: {
+    //         type: 'LineString',
+    //         coordinates: data.routes[0].geometry.coordinates,
+    //       },
+    //     });
+    //   });
+    // setCameraZoom(6);
   };
 
   const handleRequestPermission = async () => {};
@@ -80,31 +93,44 @@ export const TrvlyMapView: React.FC = () => {
     console.log(locationPermission);
   }, [locationPermission]);
 
-  return !_featureCollection?.features.length ? null : (
+  return (
     <>
-      <View style={styles.page}>
-        <View style={styles.container}>
-          <MapView style={styles.map} zoomEnabled={true}>
-            <Camera followZoomLevel={cameraZoom} followUserLocation />
+      {locationPermission == TrvlyPermissionStatus.DENIED || null ? (
+        <Text>Hello</Text>
+      ) : !_featureCollection?.features.length ? null : (
+        <View style={styles.page}>
+          <View style={styles.container}>
+            <MapView style={styles.map} zoomEnabled={true}>
+              <Camera followUserLocation followZoomLevel={cameraZoom} />
 
-            <LocationPuck
-              puckBearingEnabled
-              puckBearing="heading"
-              pulsing={{isEnabled: true}}
+              <LocationPuck
+                puckBearingEnabled
+                puckBearing="heading"
+                pulsing={{isEnabled: true}}
+              />
+              <Marker
+                handleNavigation={handleNavigation}
+                featureCollection={_featureCollection}
+              />
+
+              <LinePath path={path!!} />
+              <Images images={{icon: IMAGES.Point}} />
+
+              <UserLocation onUpdate={location => setLocation(location)} />
+            </MapView>
+          </View>
+          <NavigationButton text="Navigate" onClick={() => handleNavigation} />
+          {dislpayDetails && (
+            <DetailsBottomSheet
+              selectedMarker={selectedMarker}
+              display={dislpayDetails}
+              onBottomSheetClose={() => {
+                setDisplayDetails(false);
+              }}
             />
-            <Marker
-              handleNavigation={handleNavigation}
-              featureCollection={_featureCollection}
-            />
-
-            <LinePath path={path!!} />
-            <Images images={{icon: IMAGES.Point}} />
-
-            <UserLocation onUpdate={location => setLocation(location)} />
-          </MapView>
+          )}
         </View>
-        <NavigationButton text="Navigate" onClick={() => handleNavigation} />
-      </View>
+      )}
     </>
   );
 };

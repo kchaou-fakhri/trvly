@@ -6,3 +6,9 @@ export const CONSTANTS = {
     RESPONSE_ERROR: 'Response status: ',
   },
 };
+
+export enum TrvlyPermissionStatus {
+  GRANTED = 'granted',
+  DENIED = 'denied',
+  NEVER_ASK_AGAIN = 'never_ask_again',
+}
