@@ -18,7 +18,8 @@
       // "@config/*": ["src/config/*"],
       "@assets/*": ["src/assets/*"],
       "@services/*": ["src/services/*"],
-      "@hooks/*": ["src/hooks/*"]
+      "@hooks/*": ["src/hooks/*"],
+      "@data/*": ["src/data/*"]
 
       // "@helpers/*": ["src/helpers/*"]
     }

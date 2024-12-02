@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Mapbox, {
+import {
   MapView,
   LocationPuck,
   Camera,
@@ -8,13 +8,11 @@ import Mapbox, {
   Images,
   Location,
 } from '@rnmapbox/maps';
-import {API_KEY} from '@env';
+
 import {IMAGES} from '@assets/img';
 import {featureCollection, point} from '@turf/turf';
-import {Places} from '../../data/TemproryData';
 import {Point, FeatureCollection} from 'geojson';
 import {NavigationButton} from '@components/index';
-import {MapBoxService} from '@services/index';
 import {Path, TrvlyCity} from '@model/index';
 import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent';
 import {useLocationPermission} from '@hooks/usePermission';
@@ -22,12 +20,10 @@ import {TrvlyPermissionStatus} from '@trvlyUtils/constants';
 import {Marker} from './components/Marker';
 import {LinePath} from './components/LinePath';
 import {DetailsBottomSheet} from './components/DetailsBottomSheet';
+import {useMap} from '@hooks/useMap';
+import {MapLocalService} from '@services/index';
 
 export const TrvlyMapView: React.FC = () => {
-  Mapbox.setAccessToken(API_KEY);
-  Mapbox.setTelemetryEnabled(false);
-  const serviceMapBoxInstance = MapBoxService.getInstance();
-
   // Use state
   const [location, setLocation] = useState<Location>();
   const [selectedMarker, setSelectedMarker] = useState<TrvlyCity>();
@@ -40,14 +36,19 @@ export const TrvlyMapView: React.FC = () => {
   // handle permission
   let locationPermission = useLocationPermission();
 
+  // use map
+  useMap();
+
   useEffect(() => {
-    setFeatureCollection(
-      featureCollection(
-        Places.map(place =>
-          point([place.point.longitude, place.point.latitude]),
+    MapLocalService.getPlaces().then(places => {
+      setFeatureCollection(
+        featureCollection(
+          places.map(place =>
+            point([place.point.longitude, place.point.latitude]),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }, []);
 
   const handleNavigation = (event: OnPressEvent) => {
@@ -55,13 +56,11 @@ export const TrvlyMapView: React.FC = () => {
 
     setDisplayDetails(true);
 
-    setSelectedMarker(
-      Places.filter(
-        place =>
-          event.features[0].geometry.coordinates[0].toString().charAt(4) ==
-          place.point.longitude.toString().charAt(4),
-      )[0],
-    );
+    MapLocalService.getPlaceById(
+      (event.features[0].geometry as Point).coordinates[0].toString(),
+    ).then(place => {
+      setSelectedMarker(place);
+    });
 
     // serviceMapBoxInstance
     //   .getMapBoxNavigationPath(

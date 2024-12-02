@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Text, StyleSheet} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {TrvlyCity} from '@model/index';
 import {COLORES} from '@trvlyUtils/Colors';
@@ -39,7 +39,6 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
       onChange={index => handleSheetChanges(index)}>
       <BottomSheetView style={styles.contentContainer}>
         <Text style={{height: 180}}>
-          Awesome you are in{' '}
           <Text
             style={{fontSize: 15, fontWeight: 'bold', color: COLORES.Primary}}>
             {props.selectedMarker?.name}
