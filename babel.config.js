@@ -34,6 +34,7 @@ module.exports = {
           '@model': './src/model/',
           '@hooks': './src/hooks/',
           '@assets': './src/assets/',
+          '@data': './src/data/',
           // '@config': './src/config/',
           // '@helpers': './src/helpers/',
         },

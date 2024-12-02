@@ -11,7 +11,6 @@ import {
 
 import {IMAGES} from '@assets/img';
 import {featureCollection, point} from '@turf/turf';
-import {Places} from '../../data/TemproryData';
 import {Point, FeatureCollection} from 'geojson';
 import {NavigationButton} from '@components/index';
 import {Path, TrvlyCity} from '@model/index';
@@ -22,6 +21,7 @@ import {Marker} from './components/Marker';
 import {LinePath} from './components/LinePath';
 import {DetailsBottomSheet} from './components/DetailsBottomSheet';
 import {useMap} from '@hooks/useMap';
+import {MapLocalService} from '@services/index';
 
 export const TrvlyMapView: React.FC = () => {
   // Use state
@@ -40,13 +40,15 @@ export const TrvlyMapView: React.FC = () => {
   useMap();
 
   useEffect(() => {
-    setFeatureCollection(
-      featureCollection(
-        Places.map(place =>
-          point([place.point.longitude, place.point.latitude]),
+    MapLocalService.getPlaces().then(places => {
+      setFeatureCollection(
+        featureCollection(
+          places.map(place =>
+            point([place.point.longitude, place.point.latitude]),
+          ),
         ),
-      ),
-    );
+      );
+    });
   }, []);
 
   const handleNavigation = (event: OnPressEvent) => {
@@ -54,14 +56,11 @@ export const TrvlyMapView: React.FC = () => {
 
     setDisplayDetails(true);
 
-    setSelectedMarker(
-      Places.filter(
-        place =>
-          (event.features[0].geometry as Point).coordinates[0]
-            .toString()
-            .charAt(4) == place.point.longitude.toString().charAt(4),
-      )[0],
-    );
+    MapLocalService.getPlaceById(
+      (event.features[0].geometry as Point).coordinates[0].toString(),
+    ).then(place => {
+      setSelectedMarker(place);
+    });
 
     // serviceMapBoxInstance
     //   .getMapBoxNavigationPath(

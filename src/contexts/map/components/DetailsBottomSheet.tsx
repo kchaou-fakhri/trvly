@@ -39,7 +39,6 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
       onChange={index => handleSheetChanges(index)}>
       <BottomSheetView style={styles.contentContainer}>
         <Text style={{height: 180}}>
-          Awesome you are in{' '}
           <Text
             style={{fontSize: 15, fontWeight: 'bold', color: COLORES.Primary}}>
             {props.selectedMarker?.name}

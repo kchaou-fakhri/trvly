@@ -51,3 +51,5 @@ post_install do |installer|
 // highlight-end
   # ... other post install hooks
 end
+pod 'RNI18n', :path => '../node_modules/react-native-i18n'
+
