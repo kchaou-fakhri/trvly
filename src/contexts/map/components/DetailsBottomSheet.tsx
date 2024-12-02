@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Text, StyleSheet} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {TrvlyCity} from '@model/index';
 import {COLORES} from '@trvlyUtils/Colors';

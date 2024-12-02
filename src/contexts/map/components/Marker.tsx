@@ -11,9 +11,6 @@ import {OnPressEvent} from '@rnmapbox/maps/lib/typescript/src/types/OnPressEvent
 interface MarkerProps {
   handleNavigation: (event: OnPressEvent) => void;
   featureCollection: FeatureCollection;
-  lat: number;
-  lng: number;
-  text: string;
 }
 
 export const Marker: React.FC<MarkerProps> = ({
