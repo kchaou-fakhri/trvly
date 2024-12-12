@@ -5,11 +5,16 @@ import {Button, Pressable, StyleSheet, Text, View} from 'react-native';
 interface ButtonProps {
   text: string;
   onClick: () => void;
+  customStyles: any;
 }
 
-export const NavigationButton: React.FC<ButtonProps> = ({text, onClick}) => {
+export const NavigationButton: React.FC<ButtonProps> = ({
+  text,
+  onClick,
+  customStyles,
+}) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, customStyles]}>
       <Pressable onPress={onClick} style={styles.btn}>
         <Text style={styles.text}>{text}</Text>
       </Pressable>
@@ -20,8 +25,6 @@ export const NavigationButton: React.FC<ButtonProps> = ({text, onClick}) => {
 const styles = StyleSheet.create({
   container: {
     width: '50%',
-    height: '100%',
-    position: 'absolute',
     paddingBottom: 20,
     justifyContent: 'flex-end',
     alignItems: 'center',
@@ -29,15 +32,14 @@ const styles = StyleSheet.create({
   btn: {
     backgroundColor: COLORES.Primary,
     width: '100%',
-    height: 50,
+    height: 40,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
   text: {
     color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 15,
   },
 });
