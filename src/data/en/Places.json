@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Pyramids of Giza",
     "country": "Egypt",
-    "description": "The iconic pyramids built during the Old Kingdom of ancient Egypt, considered one of the Seven Wonders of the Ancient World.",
+    "description": "The iconic pyramids built during the Old Kingdom of ancient Egypt, considered one of the Seven Wonders of the Ancient World. These pyramids, including the Great Pyramid of Giza, were constructed as monumental tombs for the pharaohs and are a testament to the architectural prowess and engineering skills of the ancient Egyptians. The site also includes the Sphinx, a massive limestone statue with the body of a lion and the head of a pharaoh, which has become a symbol of ancient Egypt.",
     "point": {"latitude": 31.1342, "longitude": 29.9792},
     "details": {
       "year_built": "2560 BC",
@@ -14,7 +14,7 @@
     "id": 2,
     "name": "Amphitheater of El Jem",
     "country": "Tunisia",
-    "description": "A well-preserved Roman amphitheater in the town of El Jem, showcasing the grandeur of Roman architecture.",
+    "description": "A well-preserved Roman amphitheater in the town of El Jem, showcasing the grandeur of Roman architecture. This impressive structure, built in the 3rd century AD, could hold up to 35,000 spectators and was used for gladiatorial contests and other public spectacles. The amphitheater is a UNESCO World Heritage Site and is considered one of the most remarkable examples of Roman engineering and architecture in North Africa. Visitors can explore the underground passages where gladiators and animals were kept before contests.",
     "point": {"latitude": 35.2968, "longitude": 10.7062},
     "details": {
       "year_built": "238 AD",
@@ -23,22 +23,21 @@
   },
   {
     "id": 3,
-    "name": "Al-Qarawiyyin Mosque",
-    "country": "Morocco",
-    "description": "One of the oldest universities in the world, also functioning as a mosque and cultural hub in Fez.",
-    "point": {"latitude": 34.0654, "longitude": -4.9781},
+    "name": "Great Wall of China",
+    "country": "China",
+    "description": "An ancient series of walls and fortifications, totaling more than 13,000 miles in length, located in northern China. The Great Wall was built over several dynasties, with the most well-known sections constructed during the Ming Dynasty (1368-1644). It was originally conceived by Emperor Qin Shi Huang in the 3rd century BC as a means to prevent incursions from barbarian nomads. The wall is a UNESCO World Heritage Site and is considered one of the most impressive architectural feats in history. It is a popular tourist destination, offering stunning views and a glimpse into China's rich history.",
+    "point": {"latitude": 40.4319, "longitude": 116.5704},
     "details": {
-      "year_built": null,
-      "year_established": "859 AD",
-      "type": "Religious and Educational"
+      "year_built": "7th century BC",
+      "type": "Historical Landmark"
     }
   },
   {
     "id": 4,
     "name": "Petra",
     "country": "Jordan",
-    "description": "An ancient city carved into rose-red sandstone cliffs, known as the 'Rose City.'",
-    "point": {"latitude": 35.4444, "longitude": 30.3285},
+    "description": "A historical and archaeological city in southern Jordan, famous for its rock-cut architecture and water conduit system. Petra, also known as the Rose City due to the color of the stone from which it is carved, was established as the capital city of the Nabataean Kingdom in the 4th century BC. It is a UNESCO World Heritage Site and one of the New Seven Wonders of the World. The site includes the famous Al-Khazneh (The Treasury), a temple with an ornate, Greek-style facade carved into the sandstone cliff.",
+    "point": {"latitude": 30.3285, "longitude": 35.4444},
     "details": {
       "year_built": "312 BC",
       "type": "Archaeological Site"
@@ -48,7 +47,7 @@
     "id": 5,
     "name": "Djemaa el-Fna",
     "country": "Morocco",
-    "description": "A bustling square and marketplace in Marrakesh, offering food, entertainment, and cultural experiences.",
+    "description": "A bustling square and marketplace in Marrakesh, offering food, entertainment, and cultural experiences. Djemaa el-Fna is a vibrant hub of activity, especially in the evenings when it comes alive with street performers, musicians, and food stalls. The square is a UNESCO Masterpiece of the Oral and Intangible Heritage of Humanity, reflecting the rich cultural traditions of Morocco. Visitors can enjoy traditional Moroccan cuisine, watch snake charmers, and experience the lively atmosphere of this iconic marketplace.",
     "point": {"latitude": 31.6258, "longitude": -7.9893},
     "details": {
       "year_built": "11th century",

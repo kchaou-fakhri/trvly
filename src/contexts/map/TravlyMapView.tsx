@@ -19,9 +19,9 @@ import {useLocationPermission} from '@hooks/usePermission';
 import {TrvlyPermissionStatus} from '@trvlyUtils/constants';
 import {Marker} from './components/Marker';
 import {LinePath} from './components/LinePath';
-import {DetailsBottomSheet} from './components/DetailsBottomSheet';
 import {useMap} from '@hooks/useMap';
 import {MapLocalService} from '@services/index';
+import {DetailsBottomSheet} from './components/DetailsBottomSheet';
 
 export const TrvlyMapView: React.FC = () => {
   // Use state
@@ -51,16 +51,16 @@ export const TrvlyMapView: React.FC = () => {
     });
   }, []);
 
-  const handleNavigation = (event: OnPressEvent) => {
+  const handleNavigation = async (event: OnPressEvent) => {
     if (!location) return;
 
     setDisplayDetails(true);
 
-    MapLocalService.getPlaceById(
-      (event.features[0].geometry as Point).coordinates[0].toString(),
-    ).then(place => {
-      setSelectedMarker(place);
-    });
+    setSelectedMarker(
+      await MapLocalService.getPlaceById(
+        (event.features[0].geometry as Point).coordinates[0].toString(),
+      ),
+    );
 
     // serviceMapBoxInstance
     //   .getMapBoxNavigationPath(
@@ -118,7 +118,6 @@ export const TrvlyMapView: React.FC = () => {
               <UserLocation onUpdate={location => setLocation(location)} />
             </MapView>
           </View>
-          <NavigationButton text="Navigate" onClick={() => handleNavigation} />
           {dislpayDetails && (
             <DetailsBottomSheet
               selectedMarker={selectedMarker}
