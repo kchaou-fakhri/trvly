@@ -27,4 +27,5 @@ export const COLORES = {
   Gray: '#6c757d',
   DarkGray: '#343a40',
   LightGray: '#d2d2d2',
+  TransparentLightGray: '#d2d2d277',
 };
