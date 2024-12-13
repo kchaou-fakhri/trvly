@@ -22,6 +22,7 @@ import {LinePath} from './components/LinePath';
 import {useMap} from '@hooks/useMap';
 import {MapLocalService} from '@services/index';
 import {DetailsBottomSheet} from './components/DetailsBottomSheet';
+import LocationImage from './components/LocationImage';
 
 export const TrvlyMapView: React.FC = () => {
   // Use state
@@ -119,13 +120,15 @@ export const TrvlyMapView: React.FC = () => {
             </MapView>
           </View>
           {dislpayDetails && (
-            <DetailsBottomSheet
-              selectedMarker={selectedMarker}
-              display={dislpayDetails}
-              onBottomSheetClose={() => {
-                setDisplayDetails(false);
-              }}
-            />
+            <>
+              <DetailsBottomSheet
+                selectedMarker={selectedMarker}
+                display={dislpayDetails}
+                onBottomSheetClose={() => {
+                  setDisplayDetails(false);
+                }}
+              />
+            </>
           )}
         </View>
       )}

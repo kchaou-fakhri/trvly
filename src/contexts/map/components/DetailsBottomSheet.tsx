@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import {Text, StyleSheet, View, ScrollView} from 'react-native';
 import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
 import {TrvlyCity} from '@model/index';
 import {COLORES} from '@trvlyUtils/Colors';
@@ -9,6 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Line from '@components/Line';
 import {TextStyles} from '@trvlyUtils/GlobalStyle';
 import {NavigationButton} from '@components/Button';
+import LocationImage from './LocationImage';
 
 interface Props {
   display: Boolean;
@@ -17,10 +18,8 @@ interface Props {
 }
 
 export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
-  // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  // callbacks
   const handleSheetChanges = (index: number) => {
     console.log(index);
     if (index === -1) {
@@ -28,9 +27,6 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
     }
   };
 
-  useEffect(() => {
-    console.log('City details: ', props.selectedMarker);
-  }, [props.selectedMarker]);
   useEffect(() => {
     if (props.display) {
       bottomSheetRef.current?.expand();
@@ -85,35 +81,40 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
       </View>
     );
   };
-  // renders
+
   return (
-    <BottomSheet
-      ref={bottomSheetRef}
-      enablePanDownToClose
-      onChange={handleSheetChanges}>
-      <BottomSheetView style={styles.contentContainer}>
-        <Header />
-        <View style={styles.lineContainer}>
-          <Line />
-        </View>
-        <Content />
-        <NavigationButton
-          text={`Navigate`}
-          onClick={() => console.log('Navigate')}
-          customStyles={{paddingTop: 20, alignSelf: 'flex-end'}}
-        />
-      </BottomSheetView>
-    </BottomSheet>
+    <>
+      <LocationImage images={props.selectedMarker?.images} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        enablePanDownToClose
+        onChange={handleSheetChanges}>
+        <BottomSheetView style={styles.contentContainer}>
+          <ScrollView>
+            <Header />
+            <View style={styles.lineContainer}>
+              <Line />
+            </View>
+            <Content />
+            <NavigationButton
+              text={`Navigate`}
+              onClick={() => console.log('Navigate')}
+              customStyles={{paddingTop: 20, alignSelf: 'flex-end'}}
+            />
+          </ScrollView>
+        </BottomSheetView>
+      </BottomSheet>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   contentContainer: {
+    flex: 1,
     paddingTop: 5,
     paddingEnd: 25,
     paddingStart: 25,
   },
-
   headerContainer: {justifyContent: 'space-between', flexDirection: 'row'},
   titleText: {
     fontSize: 15,
@@ -121,7 +122,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   headerTitleContainer: {flexDirection: 'column'},
-
   reviewContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     paddingStart: 5,
-
     color: COLORES.Primary,
   },
   lineContainer: {

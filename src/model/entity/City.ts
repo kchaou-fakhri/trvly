@@ -1,4 +1,5 @@
 import {TrvlyPoint} from './Point';
+import {TrvlyImage} from './TrvlyImage';
 
 export interface TrvlyCity {
   name: string;
@@ -10,4 +11,5 @@ export interface TrvlyCity {
     year_established?: string;
     type: string;
   };
+  images: TrvlyImage[];
 }
