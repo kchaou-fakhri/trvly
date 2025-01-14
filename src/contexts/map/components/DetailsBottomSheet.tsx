@@ -1,6 +1,10 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {Text, StyleSheet, View, ScrollView} from 'react-native';
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import {TrvlyCity} from '@model/index';
 import {COLORES} from '@trvlyUtils/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -82,12 +86,27 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
     );
   };
 
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        style={[props.style]}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+        opacity={0.5}
+        pressBehavior="close"
+      />
+    ),
+    [],
+  );
+
   return (
     <>
-      <LocationImage images={props.selectedMarker?.images} />
       <BottomSheet
         ref={bottomSheetRef}
+        backdropComponent={renderBackdrop}
         enablePanDownToClose
+        topItem={<LocationImage images={props.selectedMarker?.images} />}
         onChange={handleSheetChanges}>
         <BottomSheetView style={styles.contentContainer}>
           <ScrollView>
@@ -110,7 +129,6 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
 
 const styles = StyleSheet.create({
   contentContainer: {
-    flex: 1,
     paddingTop: 5,
     paddingEnd: 25,
     paddingStart: 25,
