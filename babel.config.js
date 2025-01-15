@@ -26,7 +26,7 @@ module.exports = {
           // '@commonIsConnected': './src/common/appConfig',
           '@navigConfig': './src/navigation',
           // '@drawer': './src/navigation/drawer',
-          // '@redux': './src/redux_configuration',
+          '@redux': './src/redux_configuration',
           // '@styles': './src/styles',
           '@trvlyUtils': './src/utils/',
           '@components': './src/components/',

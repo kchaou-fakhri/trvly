@@ -10,6 +10,7 @@ export const COLORES = {
     Primary: '#f0f0f0',
     Secondary: '#d3d3d3',
     Tertiary: '#a9a9a9',
+    Black: '#000000',
   },
   Primary: '#20b08d',
   Orange: '#ff5733',
@@ -27,5 +28,6 @@ export const COLORES = {
   Gray: '#6c757d',
   DarkGray: '#343a40',
   LightGray: '#d2d2d2',
+  WhiteTranspartent: '#ffffff77',
   TransparentLightGray: '#d2d2d277',
 };
