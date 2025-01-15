@@ -5,6 +5,7 @@ interface IMainService {
   url: string;
   method: Method | undefined;
   params: {};
+  headers?: {};
 }
 /**
  * Fetches data from the API using the provided parameters.
@@ -19,12 +20,14 @@ export const fetchAPI = async <T>({
   url,
   method,
   params,
+  headers,
 }: IMainService): Promise<T> => {
   try {
     console.log(url);
     const result = await fetch(url, {
       method: method ? Method.GET : method,
       body: method == Method.GET || undefined ? null : JSON.stringify(params),
+      headers: headers ? headers : {},
     });
     if (!result.ok) {
       throw new Error(`${CONSTANTS.STRINGS.RESPONSE_ERROR} ${result.status}`);

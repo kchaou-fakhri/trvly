@@ -1,7 +1,7 @@
 import {Method, URLs} from '@services/configuration/config';
 import {fetchAPI} from '@services/configuration/MainService';
 import {API_KEY} from '@env';
-import {Point, ResponseMapBox} from '@model/index';
+import {TrvlyPoint, ResponseMapBox} from '@model/index';
 
 /**
  * A singleton service class for interacting with the MapBox API.
@@ -17,8 +17,8 @@ export class MapBoxService {
    * @returns {Promise<string>} A promise that resolves to the MapBox token.
    */
   public getMapBoxNavigationPath(
-    from: Point,
-    to: Point,
+    from: TrvlyPoint,
+    to: TrvlyPoint,
   ): Promise<ResponseMapBox> {
     return new Promise(resolve => {
       fetchAPI({
