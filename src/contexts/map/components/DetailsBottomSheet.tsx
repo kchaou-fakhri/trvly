@@ -106,7 +106,12 @@ export const DetailsBottomSheet: React.FC<Props> = (props: Props) => {
         ref={bottomSheetRef}
         backdropComponent={renderBackdrop}
         enablePanDownToClose
-        topItem={<LocationImage images={props.selectedMarker?.images} />}
+        topItem={
+          <LocationImage
+            images={props.selectedMarker?.images}
+            place={props.selectedMarker?.name}
+          />
+        }
         onChange={handleSheetChanges}>
         <BottomSheetView style={styles.contentContainer}>
           <ScrollView>
