@@ -8,6 +8,7 @@ import {
   ImageProps,
   Pressable,
   StyleSheet,
+  Text,
   Touchable,
   TouchableHighlight,
   TouchableOpacity,
@@ -30,18 +31,47 @@ const LocationImage: React.FC<LocationImageProps> = ({images}) => {
       }
       setSelected(index);
     };
+
+    const handleLastImage = () => {
+      setSelected(images!.length - 1);
+    };
+
     return (
-      <Pressable style={styles.imageContainer} onPress={handleSelectedImage}>
-        <Image
-          source={{uri: item.url}}
-          style={[
-            styles.image,
-            selected == index
-              ? {borderColor: COLORES.Primary}
-              : {borderColor: COLORES.White},
-          ]}
-        />
-      </Pressable>
+      <>
+        {index === images!.length - 1 ? (
+          <Pressable
+            style={styles.lastImageContainer}
+            onPress={handleLastImage}>
+            <View style={styles.lastImage}>
+              <Image
+                source={{uri: item.url}}
+                style={[
+                  styles.image,
+                  selected == index
+                    ? {borderColor: COLORES.Primary}
+                    : {borderColor: COLORES.White},
+                  ,
+                ]}
+              />
+              <Text style={styles.msgLastImage}>+30</Text>
+            </View>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={styles.imageContainer}
+            onPress={handleSelectedImage}>
+            <Image
+              source={{uri: item.url}}
+              style={[
+                styles.image,
+                selected == index
+                  ? {borderColor: COLORES.Primary}
+                  : {borderColor: COLORES.White},
+              ]}
+            />
+          </Pressable>
+        )}
+      </>
     );
   };
 
@@ -67,6 +97,26 @@ const styles = StyleSheet.create({
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  lastImageContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lastImage: {
+    width: 45,
+    height: 45,
+    resizeMode: 'cover',
+  },
+  msgLastImage: {
+    position: 'absolute',
+    width: 45,
+    height: 45,
+    borderRadius: 5,
+    backgroundColor: COLORES.TransparentLightGray,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: COLORES.White,
+    fontSize: 15,
   },
   image: {
     width: 45,
