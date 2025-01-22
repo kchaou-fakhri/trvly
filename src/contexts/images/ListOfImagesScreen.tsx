@@ -1,12 +1,28 @@
+import {displayImage} from '@components/image/usecase/Reducer';
 import {Result} from '@model/entity/unspleash/Result';
 import {Routes} from '@navigConfig/Routes';
 import {TrvlyStackParamList} from '@navigConfig/TRVLYSpaceNavigationTypes';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {UNSpleashService} from '@services/remote/unspleash/UNSpleashService';
+import {isIPhoneX} from '@trvlyUtils/PlatfomeUtils';
 import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Linking,
+  StatusBar,
+  Pressable,
+} from 'react-native';
+import MasonryList from 'react-native-masonry-list';
+import {useDispatch} from 'react-redux';
 
 export const ListOfImagesScreen: React.FC = () => {
+  const dispatch = useDispatch();
+
   const [images, setImages] = useState<Result[]>([]);
   const params =
     useRoute<RouteProp<TrvlyStackParamList, Routes.ListOfImagesScreen>>()
@@ -17,20 +33,40 @@ export const ListOfImagesScreen: React.FC = () => {
       setImages(data.results);
     });
   }, []);
-  const RenderItem = ({item}: {item: Result}) => (
-    <View style={styles.imageContainer}>
-      <Image source={{uri: item.urls.regular}} style={styles.image} />
-    </View>
-  );
+
+  const handleDisplayImage = (image: Result) => {
+    console.log('--->', image.urls.full);
+    dispatch(
+      displayImage({url: image.urls.full, caption: image.alt_description}),
+    );
+  };
+  const RenderItem = ({item}: {item: Result}) => {
+    console.log('--->', item.urls.regular);
+
+    return (
+      <Pressable
+        onPress={() => handleDisplayImage}
+        style={styles.imageContainer}>
+        <Image source={{uri: item.urls.regular}} style={styles.image} />
+      </Pressable>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>List of Images</Text>
-      <FlatList
+      <StatusBar hidden={true} />
+      <MasonryList
+        rerender={true}
         data={images}
-        renderItem={({item}) => <RenderItem item={item} />}
-        keyExtractor={images => images.id}
+        renderItem={({item}: {item: Result}) => <RenderItem item={item} />}
       />
+      {/* <FlatList
+        data={images}
+        numColumns={3}
+        renderItem={({item}) => <RenderItem item={item} />}
+        keyExtractor={item => item.id}
+        removeClippedSubviews={true}
+      /> */}
     </View>
   );
 };
@@ -38,20 +74,22 @@ export const ListOfImagesScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: '#fff',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
+
+  row: {
+    justifyContent: 'space-between',
+  },
+  contentContainer: {
+    paddingBottom: 16,
   },
   imageContainer: {
-    marginBottom: 16,
+    flex: 1, // This ensures that the container takes up equal space in each column
+    margin: 1, // Small margin for spacing between images
+    backgroundColor: 'red',
   },
   image: {
     width: '100%',
-    height: 200,
-    borderRadius: 8,
+    height: '100%',
   },
 });

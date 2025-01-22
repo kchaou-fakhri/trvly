@@ -10295,7 +10295,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -10468,6 +10468,18 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 826ed254d27b079cb985b63c65d0f504f11987b68ae71bac0e1c0e99dc24d5816fc9b8d053eb04737c60c018ad520a1e9c4b99af26952646ccabe9fc2b3bd64f
+  languageName: node
+  linkType: hard
+
+"react-native-masonry-list@npm:^2.16.2":
+  version: 2.16.2
+  resolution: "react-native-masonry-list@npm:2.16.2"
+  dependencies:
+    prop-types: ^15.6.2
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 4d478a6e1a0bf5365256eba11fac5d1cd42f99f8f1b11ecd7300e714496aa9ba57bcba50d5ba0b274ea70c6b1e43338356716a80594b7270bae3a6761221f846
   languageName: node
   linkType: hard
 
@@ -11942,6 +11954,7 @@ __metadata:
     react-native-gesture-handler: ^2.21.2
     react-native-i18n: ^2.0.15
     react-native-image-pan-zoom: ^2.1.12
+    react-native-masonry-list: ^2.16.2
     react-native-permissions: ^5.2.0
     react-native-reanimated: ^3.16.3
     react-native-safe-area-context: ^4.14.0
