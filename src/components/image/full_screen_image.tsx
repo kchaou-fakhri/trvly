@@ -30,9 +30,6 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({
     dispatch(closeImage());
   };
 
-  useEffect(() => {
-    console.log(fullScreenImageState);
-  }, [fullScreenImageState]);
   return (
     <>
       {fullScreenImageState?.data && (

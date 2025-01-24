@@ -1,7 +1,11 @@
 import {displayImage} from '@components/image/usecase/Reducer';
 import {TrvlyImage} from '@model/index';
+import {Routes} from '@navigConfig/Routes';
+import {TrvlyStackParamList} from '@navigConfig/TRVLYSpaceNavigationTypes';
+import {useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {COLORES} from '@trvlyUtils/Colors';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   Image,
@@ -9,20 +13,20 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  Touchable,
-  TouchableHighlight,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 
 interface LocationImageProps extends ImageProps {
   images: TrvlyImage[] | undefined;
+  place: string | undefined;
 }
 
-const LocationImage: React.FC<LocationImageProps> = ({images}) => {
+const LocationImage: React.FC<LocationImageProps> = ({images, place}) => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState<number>(-1);
+  const navigation =
+    useNavigation<NativeStackNavigationProp<TrvlyStackParamList>>();
 
   const ImageItem = ({item, index}: {item: TrvlyImage; index: number}) => {
     const handleSelectedImage = () => {
@@ -33,6 +37,9 @@ const LocationImage: React.FC<LocationImageProps> = ({images}) => {
     };
 
     const handleLastImage = () => {
+      navigation.navigate(Routes.ListOfImagesScreen, {
+        place: place!!,
+      });
       setSelected(images!.length - 1);
     };
 

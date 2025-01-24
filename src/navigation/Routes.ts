@@ -1,4 +1,5 @@
-export const Routes = {
-  Home: 'Home',
-  TrvlyMapView: 'TrvlyMapView',
-};
+export enum Routes {
+  Home = 'Home',
+  TrvlyMapView = 'TrvlyMapView',
+  ListOfImagesScreen = 'ListOfImagesScreen',
+}
