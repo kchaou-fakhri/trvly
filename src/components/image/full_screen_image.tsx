@@ -4,11 +4,12 @@ import {COLORES} from '@trvlyUtils/Colors';
 import React, {useEffect} from 'react';
 import {Dimensions, Image, Pressable} from 'react-native';
 import {StatusBar} from 'react-native';
-import {StyleSheet, Text, View} from 'react-native';
-import ImageZoom from 'react-native-image-pan-zoom';
+import {StyleSheet, Text, View, FlatList} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {useDispatch, useSelector} from 'react-redux';
 import {closeImage} from './usecase/Reducer';
+import Swiper from '@components/Swiper';
+import useDeviceInfo from '@hooks/useDeviceInfo';
 
 interface FullScreenImageProps {
   data?: Result;
@@ -26,6 +27,8 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({
     (state: AppState) => state.fullScreenImageState,
   );
 
+  const deviceInfo = useDeviceInfo();
+
   const handleClose = () => {
     dispatch(closeImage());
   };
@@ -35,19 +38,14 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({
       {fullScreenImageState?.data && (
         <View style={[styles.container, customStyles]}>
           <StatusBar backgroundColor={COLORES.BACKGROUND.Black} />
-          <ImageZoom
-            cropWidth={Dimensions.get('window').width}
-            cropHeight={Dimensions.get('window').height}
-            imageWidth={Dimensions.get('window').width}
-            imageHeight={Dimensions.get('window').height}>
-            <Image
-              source={{
-                uri: fullScreenImageState.data?.url,
-              }}
-              style={styles.images}
-            />
-          </ImageZoom>
-
+          <Swiper
+          images={fullScreenImageState.data}
+          imageHeight={deviceInfo.height}
+          imageWidth={deviceInfo.width}
+     
+        />
+            
+          
           <Pressable style={styles.backButton} onPress={handleClose}>
             <Icon name="close" size={24} color={COLORES.WhiteTranspartent} />
           </Pressable>
@@ -61,6 +59,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     backgroundColor: COLORES.BACKGROUND.Black,
+
   },
   images: {
     width: '100%',

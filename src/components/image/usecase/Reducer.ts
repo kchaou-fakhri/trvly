@@ -5,17 +5,20 @@ import {TrvlyImage} from '@model/index';
 
 const initialState: FullScreenImageState = {
   data: undefined,
+  index: undefined
 };
 
 export const fullScreenImageSlice = createSlice({
   name: 'fullScreenImage',
   initialState,
   reducers: {
-    displayImage(state, action: PayloadAction<TrvlyImage>) {
-      state.data = action.payload;
+    displayImage(state, action: PayloadAction<{data: TrvlyImage[], index: number}>) {
+      state.data = action.payload.data;
+      state.index = action.payload.index;
     },
     closeImage(state) {
       state.data = undefined;
+      state.index = undefined;
     },
   },
 });
