@@ -1,6 +1,6 @@
 import {Method, URLs} from '@services/configuration/config';
 import {fetchAPI} from '@services/configuration/MainService';
-import {API_KEY} from '@env';
+import {MAPBOX_KEY} from '@env';
 import {TrvlyPoint, ResponseMapBox} from '@model/index';
 
 /**
@@ -22,7 +22,7 @@ export class MapBoxService {
   ): Promise<ResponseMapBox> {
     return new Promise(resolve => {
       fetchAPI({
-        url: `${URLs.MAPBOX}${from.longitude}%2C${from.latitude}%3B${to.longitude}%2C${to.latitude}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${API_KEY}`,
+        url: `${URLs.MAPBOX}${from.longitude}%2C${from.latitude}%3B${to.longitude}%2C${to.latitude}?alternatives=true&geometries=geojson&language=en&overview=full&steps=true&access_token=${MAPBOX_KEY}`,
         method: Method.GET,
         params: {},
       })

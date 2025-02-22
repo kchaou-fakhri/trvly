@@ -32,8 +32,6 @@ allprojects {
                 basic(BasicAuthentication)
             }
             credentials {
-                // Do not change the username below.
-                // This should always be `mapbox` (not your username).
                 username = 'mapbox'
                 password = project.properties['MAPBOX_DOWNLOADS_TOKEN'] ?: ""
             }
