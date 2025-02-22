@@ -1,4 +1,5 @@
 import {displayImage} from '@components/image/usecase/Reducer';
+import { ProgressBar } from '@components/Progress';
 import {Result} from '@model/entity/unspleash/Result';
 import {Routes} from '@navigConfig/Routes';
 import {TrvlyStackParamList} from '@navigConfig/TRVLYSpaceNavigationTypes';
@@ -53,13 +54,16 @@ export const ListOfImagesScreen: React.FC = () => {
   };
 
   return (
+      images ? (
     <View style={styles.container}>
       <StatusBar hidden={true} />
       <MasonryList
-        rerender={true}
-        data={images}
-        renderItem={({item}: {item: Result}) => <RenderItem item={item} />}
-      />
+        images={images.map(item => ({
+          uri: item.urls.regular,
+          id: item.id}))}
+        imageContainerStyle={styles.imageContainer}
+        onPressImage={handleDisplayImage} 
+        />
       {/* <FlatList
         data={images}
         numColumns={3}
@@ -68,13 +72,15 @@ export const ListOfImagesScreen: React.FC = () => {
         removeClippedSubviews={true}
       /> */}
     </View>
-  );
+  ):  <View style={styles.container}>
+        <ProgressBar />
+    </View>)
+  
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 
   row: {
@@ -86,7 +92,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1, // This ensures that the container takes up equal space in each column
     margin: 1, // Small margin for spacing between images
-    backgroundColor: 'red',
   },
   image: {
     width: '100%',

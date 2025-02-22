@@ -31,7 +31,7 @@ const LocationImage: React.FC<LocationImageProps> = ({images, place}) => {
   const ImageItem = ({item, index}: {item: TrvlyImage; index: number}) => {
     const handleSelectedImage = () => {
       if (images) {
-        dispatch(displayImage(images[index]));
+        dispatch(displayImage({data : images, index}));
       }
       setSelected(index);
     };
