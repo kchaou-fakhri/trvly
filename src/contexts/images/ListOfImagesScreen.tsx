@@ -5,26 +5,27 @@ import {Routes} from '@navigConfig/Routes';
 import {TrvlyStackParamList} from '@navigConfig/TRVLYSpaceNavigationTypes';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {UNSpleashService} from '@services/remote/unspleash/UNSpleashService';
-import {isIPhoneX} from '@trvlyUtils/PlatfomeUtils';
+import { FlashList } from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {
   View,
-  Text,
-  FlatList,
   Image,
   StyleSheet,
-  TouchableWithoutFeedback,
-  Linking,
   StatusBar,
   Pressable,
+  ScrollView,
 } from 'react-native';
-import MasonryList from 'react-native-masonry-list';
 import {useDispatch} from 'react-redux';
+import { getImageDimensions } from '@helpers/FullScreenImageHelper';
+import { TrvlyImage } from '@model/index';
 
 export const ListOfImagesScreen: React.FC = () => {
   const dispatch = useDispatch();
 
   const [images, setImages] = useState<Result[]>([]);
+  const [firstHalf, setFirstHalf] = useState<Result[]>([]);
+  const [secondHalf, setSecondHalf] = useState<Result[]>([]);
+
   const params =
     useRoute<RouteProp<TrvlyStackParamList, Routes.ListOfImagesScreen>>()
       .params;
@@ -35,66 +36,83 @@ export const ListOfImagesScreen: React.FC = () => {
     });
   }, []);
 
-  const handleDisplayImage = (image: Result) => {
-    console.log('--->', image.urls.full);
+  const handleDisplayImage = (index: number) => {
+    const res: TrvlyImage[] = images.map((result) => {
+      return {url : result.urls.regular, caption : result.alt_description}
+    })
+    console.log("------", index)
     dispatch(
-      displayImage({url: image.urls.full, caption: image.alt_description}),
+      displayImage({data :res, index}),
     );
   };
-  const RenderItem = ({item}: {item: Result}) => {
-    console.log('--->', item.urls.regular);
+  const RenderItem = ({item}: {item: Result}, index: number) => {
 
     return (
       <Pressable
-        onPress={() => handleDisplayImage}
-        style={styles.imageContainer}>
-        <Image source={{uri: item.urls.regular}} style={styles.image} />
+        onPress={() => handleDisplayImage(index)}
+        style={styles.imageContainer}
+        >
+        <Image source={{uri: item.urls.regular}} style={[styles.image, {height: getImageDimensions(item.height, item.width)}]} />
       </Pressable>
     );
   };
 
+  useEffect(() => {
+if(images.length >0){
+  setFirstHalf(images.slice(0, Math.ceil(images.length / 2)));
+  setSecondHalf(images.slice(Math.ceil(images.length / 2)));
+  }
+  },[images])
+  
+  
+
+
   return (
-      images ? (
-    <View style={styles.container}>
+      images.length>0 ? (
+    <ScrollView style={styles.container}>
       <StatusBar hidden={true} />
-      <MasonryList
-        images={images.map(item => ({
-          uri: item.urls.regular,
-          id: item.id}))}
-        imageContainerStyle={styles.imageContainer}
-        onPressImage={handleDisplayImage} 
-        />
-      {/* <FlatList
-        data={images}
-        numColumns={3}
+        <View style={styles.row}>
+       <FlashList
+        scrollEnabled={false}
+        data={firstHalf}
+        renderItem={({item}) => <RenderItem item={item} />}
+        keyExtractor={(item, index) => item.id}
+        removeClippedSubviews={true}
+        estimatedItemSize={images.length/2}
+      /> 
+      <FlashList
+        scrollEnabled={false}
+        data={secondHalf}
         renderItem={({item}) => <RenderItem item={item} />}
         keyExtractor={item => item.id}
         removeClippedSubviews={true}
-      /> */}
-    </View>
-  ):  <View style={styles.container}>
-        <ProgressBar />
-    </View>)
+        estimatedItemSize={images.length/2}
+      /> 
+      </View>
+    </ScrollView>
+  ):  null)
   
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
 
   row: {
     justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   contentContainer: {
     paddingBottom: 16,
   },
+ 
   imageContainer: {
-    flex: 1, // This ensures that the container takes up equal space in each column
+    flex: 1, 
     margin: 1, // Small margin for spacing between images
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
   },
 });
