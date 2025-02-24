@@ -36,7 +36,7 @@ module.exports = {
           '@assets': './src/assets/',
           '@data': './src/data/',
           // '@config': './src/config/',
-          // '@helpers': './src/helpers/',
+          '@helpers': './src/helpers/',
         },
       },
     ],

@@ -37,8 +37,8 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({
     <>
       {fullScreenImageState?.data && (
         <View style={[styles.container, customStyles]}>
-          <StatusBar backgroundColor={COLORES.BACKGROUND.Black} />
-          <Swiper
+     <StatusBar hidden={true} />      
+         <Swiper
           images={fullScreenImageState.data}
           imageHeight={deviceInfo.height}
           imageWidth={deviceInfo.width}

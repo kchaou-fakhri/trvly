@@ -30,7 +30,7 @@ export const TrvlyMapView: React.FC = () => {
   const [selectedMarker, setSelectedMarker] = useState<TrvlyCity>();
   const [_featureCollection, setFeatureCollection] =
     useState<FeatureCollection<Point>>();
-  const [cameraZoom, setCameraZoom] = useState(8);
+  const [cameraZoom, setCameraZoom] = useState(6);
   const [path, setPath] = useState<Path>();
   const [dislpayDetails, setDisplayDetails] = useState<Boolean | null>(null);
 

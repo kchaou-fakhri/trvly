@@ -19,9 +19,8 @@
       "@assets/*": ["src/assets/*"],
       "@services/*": ["src/services/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@data/*": ["src/data/*"]
-
-      // "@helpers/*": ["src/helpers/*"]
+      "@data/*": ["src/data/*"],
+      "@helpers/*": ["src/helpers/*"]
     }
   },
   "extends": "@react-native/typescript-config/tsconfig.json"
