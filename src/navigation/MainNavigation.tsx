@@ -7,6 +7,7 @@ import {TrvlyMapView} from '@contexts/map/TravlyMapView';
 import {Routes} from './Routes';
 import {TrvlyStackParamList} from './TRVLYSpaceNavigationTypes';
 import {ListOfImagesScreen} from '@contexts/images/ListOfImagesScreen';
+import { FullScreenImage } from '@components/image/FullScreenImage';
 
 export const MainNavigation = () => {
   const Stack = createNativeStackNavigator<TrvlyStackParamList>();
@@ -18,10 +19,9 @@ export const MainNavigation = () => {
         screenOptions={{headerShown: false}}>
         <Stack.Screen name={Routes.Home} component={HomeScreen} />
         <Stack.Screen name={Routes.TrvlyMapView} component={TrvlyMapView} />
-        <Stack.Screen
-          name={Routes.ListOfImagesScreen}
-          component={ListOfImagesScreen}
-        />
+        <Stack.Screen name={Routes.ListOfImagesScreen} component={ListOfImagesScreen} />
+        <Stack.Screen name={Routes.FullScreenImage} component={FullScreenImage} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
