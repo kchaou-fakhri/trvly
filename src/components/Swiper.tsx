@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from 'react-native';
 import * as Progress from 'react-native-progress';
+import FastImage from 'react-native-fast-image';
 
 interface SwiperProps {
   images: TrvlyImage[];
@@ -25,10 +26,10 @@ export const Swiper: React.FC<SwiperProps> = props => {
   const {images, imageHeight, imageWidth, startedIndex = 0} = props;
   const screenWidth = imageWidth || Dimensions.get('window').width;
 
+  const [currentIndex, setCurrentIndex] = useState(startedIndex);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   useEffect(() => {
-    // Scroll to initial index after component mounts
     if (horizontalScrollRef.current && startedIndex > 0) {
       horizontalScrollRef.current.scrollTo({
         x: screenWidth * startedIndex,
@@ -37,44 +38,36 @@ export const Swiper: React.FC<SwiperProps> = props => {
     }
   }, [startedIndex, screenWidth]);
 
-  const handleClick = (
-    e: NativeSyntheticEvent<NativeScrollEvent>,
-    item: TrvlyImage,
-  ) => {
-    setIsImageLoaded(false);
-    const {swipeBottom, swipeTop} = props;
-    if (e.nativeEvent.contentOffset.y < 0) {
-      swipeBottom && swipeBottom(item);
-    } else {
-      swipeTop && swipeTop(item);
-    }
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const newIndex = Math.round(
+      event.nativeEvent.contentOffset.x / screenWidth,
+    );
+    setCurrentIndex(newIndex);
+    setIsImageLoaded(false); // Reset loading state when changing images
   };
 
   return (
     <ScrollView
-      horizontal={true}
-      pagingEnabled={true}
-      ref={horizontalScrollRef}>
+      horizontal
+      pagingEnabled
+      ref={horizontalScrollRef}
+      onMomentumScrollEnd={handleScroll} // Detect when scrolling stops
+      showsHorizontalScrollIndicator={false}>
       {images &&
-        images.map((item, index) => {
-          return typeof item.url === 'string' &&
-            typeof item.caption === 'string' ? (
-            <ScrollView key={index} onScrollEndDrag={e => handleClick(e, item)}>
+        images.map((item, index) => (
+          <View key={index} style={{width: screenWidth, height: imageHeight}}>
+            {index === currentIndex && ( // Load only the current image
               <View style={GlobalStyle.container}>
-                {isImageLoaded ? null : <Progress.Circle />}
-
-                <Image
+                <FastImage
                   style={{height: imageHeight, width: screenWidth}}
                   source={{uri: item.url}}
                   onLoad={() => setIsImageLoaded(true)}
-                  onError={() => {
-                    console.log('Error loading image');
-                  }}
+                  onError={() => console.log('Error loading image')}
                 />
               </View>
-            </ScrollView>
-          ) : null;
-        })}
+            )}
+          </View>
+        ))}
     </ScrollView>
   );
 };

@@ -22,7 +22,6 @@ import {LinePath} from './components/LinePath';
 import {useMap} from '@hooks/useMap';
 import {MapLocalService} from '@services/index';
 import {DetailsBottomSheet} from './components/DetailsBottomSheet';
-import LocationImage from './components/LocationImage';
 import {useGSPLocations} from '@hooks/useGSPLocations';
 
 export const TrvlyMapView: React.FC = () => {
