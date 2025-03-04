@@ -10,39 +10,54 @@ import {useDispatch, useSelector} from 'react-redux';
 import {closeImage} from './usecase/Reducer';
 import Swiper from '@components/Swiper';
 import useDeviceInfo from '@hooks/useDeviceInfo';
+import { TrvlyImage } from '@model/index';
+import {StackNavigationProp} from '@react-navigation/stack';
+import { TrvlyStackParamList } from '@navigConfig/TRVLYSpaceNavigationTypes';
+import {Route, RouteProp, useRoute} from '@react-navigation/native';
+import { Routes } from '@navigConfig/Routes';
+
 
 interface FullScreenImageProps {
-  data?: Result;
+  data?: TrvlyImage[];
+  index?: number;
   onClick?: () => void;
   customStyles?: any;
+  navigation: StackNavigationProp<TrvlyStackParamList>;
+  
 }
 
 export const FullScreenImage: React.FC<FullScreenImageProps> = ({
   data,
   onClick,
   customStyles,
+  navigation
 }) => {
-  const dispatch = useDispatch();
-  const fullScreenImageState = useSelector(
-    (state: AppState) => state.fullScreenImageState,
-  );
 
+  const params =
+  useRoute<
+    RouteProp<
+      TrvlyStackParamList,
+      Routes.FullScreenImage
+    >
+  >().params;
   const deviceInfo = useDeviceInfo();
 
   const handleClose = () => {
-    dispatch(closeImage());
-  };
+    navigation.goBack();
+  }
+
+
 
   return (
-    <>
-      {fullScreenImageState?.data && (
-        <View style={[styles.container, customStyles]}>
-     <StatusBar hidden={true} />      
+
+        <View style={styles.container}>
+
+     <StatusBar hidden />
          <Swiper
-          images={fullScreenImageState.data}
+          images={params.data!!}
           imageHeight={deviceInfo.height}
           imageWidth={deviceInfo.width}
-     
+          
         />
             
           
@@ -50,21 +65,18 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({
             <Icon name="close" size={24} color={COLORES.WhiteTranspartent} />
           </Pressable>
         </View>
-      )}
-    </>
+
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
     backgroundColor: COLORES.BACKGROUND.Black,
-
+    flex:1
   },
   images: {
     width: '100%',
     height: '100%',
-    position: 'absolute',
   },
   backButton: {
     position: 'absolute',

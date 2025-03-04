@@ -53,6 +53,7 @@ export const TrvlyMapView: React.FC = () => {
   }, []);
 
   const handleNavigation = async (event: OnPressEvent) => {
+
     if (!location) return;
 
     setDisplayDetails(true);
