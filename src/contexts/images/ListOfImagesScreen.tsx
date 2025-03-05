@@ -38,11 +38,16 @@ export const ListOfImagesScreen: React.FC = () => {
 
   //Helper block
   const handleDisplayImage = (index: number) => {
-    const res: TrvlyImage[] = images.map(result => {
-      return {url: result.urls.full, caption: result.alt_description};
-    });
+    // const res: TrvlyImage[] = images.map(result => {
+    //   return {
+    //     url: result.urls.full !== '' ? result.urls.full : result.urls.regular,
+    //     caption: result.alt_description,
+    //   };
+    // });
     navigation.navigate(Routes.FullScreenImage, {
-      data: res,
+      data: [
+        {url: images[index].urls.full, caption: images[index].alt_description},
+      ],
       index: index,
     });
   };

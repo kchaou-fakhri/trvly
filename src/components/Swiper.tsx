@@ -43,7 +43,6 @@ export const Swiper: React.FC<SwiperProps> = props => {
       event.nativeEvent.contentOffset.x / screenWidth,
     );
     setCurrentIndex(newIndex);
-    setIsImageLoaded(false); // Reset loading state when changing images
   };
 
   return (
@@ -56,16 +55,12 @@ export const Swiper: React.FC<SwiperProps> = props => {
       {images &&
         images.map((item, index) => (
           <View key={index} style={{width: screenWidth, height: imageHeight}}>
-            {index === currentIndex && ( // Load only the current image
-              <View style={GlobalStyle.container}>
-                <FastImage
-                  style={{height: imageHeight, width: screenWidth}}
-                  source={{uri: item.url}}
-                  onLoad={() => setIsImageLoaded(true)}
-                  onError={() => console.log('Error loading image')}
-                />
-              </View>
-            )}
+            <View style={GlobalStyle.container}>
+              <FastImage
+                style={{height: imageHeight, width: screenWidth}}
+                source={{uri: item.url}}
+              />
+            </View>
           </View>
         ))}
     </ScrollView>
