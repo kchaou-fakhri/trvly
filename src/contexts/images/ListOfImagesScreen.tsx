@@ -3,7 +3,7 @@ import {Routes} from '@navigConfig/Routes';
 import {TrvlyStackParamList} from '@navigConfig/TRVLYSpaceNavigationTypes';
 import {RouteProp, useRoute} from '@react-navigation/native';
 import {UNSpleashService} from '@services/remote/unspleash/UNSpleashService';
-import {FlashList} from '@shopify/flash-list';
+import {MasonryFlashList} from '@shopify/flash-list';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -28,8 +28,6 @@ export const ListOfImagesScreen: React.FC = () => {
 
   //State block
   const [images, setImages] = useState<Result[]>([]);
-  const [firstHalf, setFirstHalf] = useState<Result[]>([]);
-  const [secondHalf, setSecondHalf] = useState<Result[]>([]);
 
   //Effect block
   useEffect(() => {
@@ -40,14 +38,18 @@ export const ListOfImagesScreen: React.FC = () => {
 
   //Helper block
   const handleDisplayImage = (index: number) => {
-    const res: TrvlyImage[] = images.map(result => {
-      return {url: result.urls.regular, caption: result.alt_description};
-    });
+    // const res: TrvlyImage[] = images.map(result => {
+    //   return {
+    //     url: result.urls.full !== '' ? result.urls.full : result.urls.regular,
+    //     caption: result.alt_description,
+    //   };
+    // });
     navigation.navigate(Routes.FullScreenImage, {
-      data: res,
+      data: [
+        {url: images[index].urls.full, caption: images[index].alt_description},
+      ],
       index: index,
     });
-    console.log('------', index);
   };
   const RenderItem = ({item, index}: {item: Result; index: number}) => {
     return (
@@ -65,18 +67,19 @@ export const ListOfImagesScreen: React.FC = () => {
     );
   };
 
-  useEffect(() => {
-    if (images.length > 0) {
-      setFirstHalf(images.slice(0, Math.ceil(images.length / 2)));
-      setSecondHalf(images.slice(Math.ceil(images.length / 2)));
-    }
-  }, [images]);
-
   return images.length > 0 ? (
     <ScrollView style={styles.container}>
       <StatusBar hidden={true} />
       <View style={styles.row}>
-        <FlashList
+        <MasonryFlashList
+          data={images}
+          renderItem={({item, index}) => (
+            <RenderItem item={item} index={index} />
+          )}
+          numColumns={2}
+          estimatedItemSize={30}
+        />
+        {/* <FlashList
           scrollEnabled={false}
           data={firstHalf}
           renderItem={({item, index}) => (
@@ -90,12 +93,12 @@ export const ListOfImagesScreen: React.FC = () => {
           scrollEnabled={false}
           data={secondHalf}
           renderItem={({item, index}) => (
-            <RenderItem item={item} index={index} />
+            <RenderItem item={item} index={index + images.length / 2} />
           )}
           keyExtractor={item => item.id}
           removeClippedSubviews={true}
           estimatedItemSize={images.length / 2}
-        />
+        /> */}
       </View>
     </ScrollView>
   ) : null;

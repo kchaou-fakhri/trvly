@@ -13,7 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Line from '@components/Line';
 import {TextStyles} from '@trvlyUtils/GlobalStyle';
 import {NavigationButton} from '@components/Button';
-import LocationImage from './LocationImage';
+import LocationImage from '@components/image/LocationImage';
 
 interface Props {
   display: Boolean;

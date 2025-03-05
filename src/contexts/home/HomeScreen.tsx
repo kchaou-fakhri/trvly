@@ -1,10 +1,22 @@
+import {useLocationPermission} from '@hooks/usePermission';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
+import {useNavigation, NavigationProp} from '@react-navigation/native';
+import {Routes} from '@navigConfig/Routes';
 
 export const HomeScreen: React.FC = () => {
+  // handle permission
+  let locationPermission = useLocationPermission();
+  const navigation = useNavigation<NavigationProp<any>>();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>Welcome to the Home Screen!</Text>
+      <Pressable
+        onPress={() => {
+          navigation.navigate(Routes.TrvlyMapView);
+        }}>
+        <Text style={styles.welcomeText}>Welcome to the Home Screen!</Text>
+      </Pressable>
     </View>
   );
 };

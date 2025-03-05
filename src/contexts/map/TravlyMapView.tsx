@@ -22,7 +22,7 @@ import {LinePath} from './components/LinePath';
 import {useMap} from '@hooks/useMap';
 import {MapLocalService} from '@services/index';
 import {DetailsBottomSheet} from './components/DetailsBottomSheet';
-import LocationImage from './components/LocationImage';
+import {useGSPLocations} from '@hooks/useGSPLocations';
 
 export const TrvlyMapView: React.FC = () => {
   // Use state
@@ -40,6 +40,8 @@ export const TrvlyMapView: React.FC = () => {
   // use map
   useMap();
 
+  useGSPLocations();
+
   useEffect(() => {
     MapLocalService.getPlaces().then(places => {
       setFeatureCollection(
@@ -53,7 +55,6 @@ export const TrvlyMapView: React.FC = () => {
   }, []);
 
   const handleNavigation = async (event: OnPressEvent) => {
-
     if (!location) return;
 
     setDisplayDetails(true);
@@ -88,16 +89,10 @@ export const TrvlyMapView: React.FC = () => {
     // setCameraZoom(6);
   };
 
-  const handleRequestPermission = async () => {};
-
-  useEffect(() => {
-    console.log(locationPermission);
-  }, [locationPermission]);
-
   return (
     <>
       {locationPermission == TrvlyPermissionStatus.DENIED || null ? (
-        <Text>Hello</Text>
+        <></>
       ) : !_featureCollection?.features.length ? null : (
         <View style={styles.page}>
           <View style={styles.container}>

@@ -32,8 +32,10 @@ const LocationImage: React.FC<LocationImageProps> = ({images, place}) => {
     const handleSelectedImage = () => {
       if (images) {
         navigation.navigate(Routes.FullScreenImage, {
-          data: images,index});
-       // dispatch(displayImage({data : images, index}));
+          data: images,
+          index,
+        });
+        // dispatch(displayImage({data : images, index}));
       }
       setSelected(index);
     };

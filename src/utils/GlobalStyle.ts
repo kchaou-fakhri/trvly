@@ -5,6 +5,11 @@ export const GlobalStyle = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerCenter: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export const TextStyles = StyleSheet.create({

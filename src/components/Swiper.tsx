@@ -1,56 +1,70 @@
-import { TrvlyImage } from '@model/index';
-import React from 'react';
-import { StyleSheet, View, Image, ScrollView, Dimensions, Text, StatusBar, Platform, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-
+import {TrvlyImage} from '@model/index';
+import {GlobalStyle} from '@trvlyUtils/GlobalStyle';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  ScrollView,
+  View,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Dimensions,
+} from 'react-native';
+import * as Progress from 'react-native-progress';
+import FastImage from 'react-native-fast-image';
 
 interface SwiperProps {
-    images: TrvlyImage[];
-    imageHeight?: number;
-    imageWidth?: number;
-    swipeBottom?: (item: TrvlyImage) => void;
-    swipeTop?: (item: TrvlyImage) => void;
+  images: TrvlyImage[];
+  imageHeight?: number;
+  imageWidth?: number;
+  startedIndex?: number;
+  swipeBottom?: (item: TrvlyImage) => void;
+  swipeTop?: (item: TrvlyImage) => void;
 }
 
-export const Swiper: React.FC<SwiperProps> = (props) => {
-    const handleClick = (e: NativeSyntheticEvent<NativeScrollEvent>, item: TrvlyImage) => {
-        const { swipeBottom, swipeTop } = props;
-        if (e.nativeEvent.contentOffset.y < 0) {
-            swipeBottom && swipeBottom(item);
-        } else {
-            swipeTop && swipeTop(item);
-        }
-    };
+export const Swiper: React.FC<SwiperProps> = props => {
+  const horizontalScrollRef = useRef<ScrollView>(null);
+  const {images, imageHeight, imageWidth, startedIndex = 0} = props;
+  const screenWidth = imageWidth || Dimensions.get('window').width;
 
-    const { images, imageHeight, imageWidth } = props;
- 
+  const [currentIndex, setCurrentIndex] = useState(startedIndex);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-    return (
-        <ScrollView horizontal={true} pagingEnabled={true}>
-            {images &&
-                images.map((item, index) => {
-                    return (typeof item.url === 'string' && typeof item.caption === 'string' ? (
-                        <ScrollView key={index} onScrollEndDrag={(e) => handleClick(e, item)}>
-                            <Image
-                                style={{ height: imageHeight, width: imageWidth }}
-                                source={{ uri: item.url }}
-                            />
-                          
-                        </ScrollView>
-                    ) : null);
-                })
-            }
-        </ScrollView>
+  useEffect(() => {
+    if (horizontalScrollRef.current && startedIndex > 0) {
+      horizontalScrollRef.current.scrollTo({
+        x: screenWidth * startedIndex,
+        animated: false,
+      });
+    }
+  }, [startedIndex, screenWidth]);
+
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const newIndex = Math.round(
+      event.nativeEvent.contentOffset.x / screenWidth,
     );
+    setCurrentIndex(newIndex);
+  };
+
+  return (
+    <ScrollView
+      horizontal
+      pagingEnabled
+      ref={horizontalScrollRef}
+      onMomentumScrollEnd={handleScroll} // Detect when scrolling stops
+      showsHorizontalScrollIndicator={false}>
+      {images &&
+        images.map((item, index) => (
+          <View key={index} style={{width: screenWidth, height: imageHeight}}>
+            <View style={GlobalStyle.container}>
+              <FastImage
+                style={{height: imageHeight, width: screenWidth}}
+                source={{uri: item.url}}
+              />
+            </View>
+          </View>
+        ))}
+    </ScrollView>
+  );
 };
 
 export default Swiper;
-
-const styles = StyleSheet.create({
-    imageText: {
-        position: 'absolute',
-        bottom: 14,
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%'
-    },
-});
