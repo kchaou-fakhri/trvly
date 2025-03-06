@@ -35,7 +35,11 @@ export const FullScreenImage: React.FC<FullScreenImageProps> = ({
       />
 
       <Pressable style={styles.backButton} onPress={handleClose}>
-        <Icon name="close" size={24} color={COLORES.WhiteTranspartent} />
+        <Icon
+          name="close"
+          size={24}
+          color={COLORES.Transparent.WhiteTranspartent}
+        />
       </Pressable>
     </View>
   );
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    backgroundColor: COLORES.WhiteTranspartent,
+    backgroundColor: COLORES.Transparent.WhiteTranspartent,
     width: 50,
     height: 50,
     borderRadius: 40,

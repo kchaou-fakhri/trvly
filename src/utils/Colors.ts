@@ -1,4 +1,4 @@
-import {Light} from '@rnmapbox/maps';
+import { Light } from '@rnmapbox/maps';
 
 export const COLORES = {
   Text: {
@@ -7,7 +7,7 @@ export const COLORES = {
     Tertiary: '#808080',
   },
   BACKGROUND: {
-    Primary: '#f0f0f0',
+    Primary: '#fefefe',
     Secondary: '#d3d3d3',
     Tertiary: '#a9a9a9',
     Black: '#000000',
@@ -28,6 +28,12 @@ export const COLORES = {
   Gray: '#6c757d',
   DarkGray: '#343a40',
   LightGray: '#d2d2d2',
-  WhiteTranspartent: '#ffffff65',
-  TransparentLightGray: '#d2d2d277',
+  Transparent: {
+    TransparentLightGray: '#d2d2d277',
+    WhiteTranspartent_25DG: '#ffffff50',
+    WhiteTranspartent: '#ffffff65',
+    BlueSky: "#c2e9fb40",
+    LightGreen: '#28a74517',
+
+  }
 };

@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     borderRadius: 5,
-    backgroundColor: COLORES.TransparentLightGray,
+    backgroundColor: COLORES.Transparent.TransparentLightGray,
     textAlign: 'center',
     textAlignVertical: 'center',
     color: COLORES.White,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   flatlistStyle: {
-    backgroundColor: COLORES.TransparentLightGray,
+    backgroundColor: COLORES.Transparent.TransparentLightGray,
     height: 60,
     paddingEnd: 10,
     paddingStart: 10,
