@@ -1,3 +1,4 @@
+import { AdhanResult } from '@model/entity/adhan/AdhanResult';
 import { RootObject } from '@model/entity/unspleash/RootObject';
 import { AdhanParams, Method, RegexParams, URLs } from '@services/configuration/config';
 import { fetchAPI } from '@services/configuration/MainService';
@@ -14,8 +15,8 @@ export class ADHANService {
      * @returns A promise that resolves to a RootObject containing the photos.
      */
     static async getPrayerTime(
-
-    ): Promise<RootObject> {
+        timeZone: String
+    ): Promise<AdhanResult> {
         return new Promise((resolve, reject) => {
             fetchAPI({
                 url:
@@ -30,7 +31,7 @@ export class ADHANService {
                     '10.5533' +
                     RegexParams.RegexAnd +
                     AdhanParams.Timezonestring +
-                    "UTC" +
+                    timeZone +
                     RegexParams.RegexAnd +
                     AdhanParams.Method +
                     "3"
@@ -40,7 +41,7 @@ export class ADHANService {
                 params: {},
             })
                 .then(data => {
-                    resolve(data as RootObject);
+                    resolve(data as AdhanResult);
                 })
                 .catch(e => console.log(e));
         });

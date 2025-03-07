@@ -1,5 +1,5 @@
-import {CONSTANTS} from '@trvlyUtils/constants';
-import {Method} from './config';
+import { CONSTANTS } from '@trvlyUtils/constants';
+import { Method } from './config';
 
 interface IMainService {
   url: string;

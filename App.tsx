@@ -8,15 +8,11 @@ import store from '@redux/store';
 import {useDeviceInfo} from '@hooks/useDeviceInfo';
 import {useLocationPermission} from '@hooks/usePermission';
 import {COLORES} from '@trvlyUtils/Colors';
-import {ADHANService} from '@services/remote/adhan/AdhanServices';
 
 const App = () => {
   useLocationPermission();
   useDeviceInfo();
 
-  ADHANService.getPrayerTime().then(data => {
-    console.log(data);
-  });
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
