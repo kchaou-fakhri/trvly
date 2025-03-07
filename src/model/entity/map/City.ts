@@ -1,5 +1,5 @@
-import {TrvlyPoint} from './Point';
-import {TrvlyImage} from './TrvlyImage';
+import { TrvlyPoint } from './Point';
+import { TrvlyImage } from './TrvlyImage';
 
 export interface TrvlyCity {
   name: string;

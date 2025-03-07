@@ -1,7 +1,7 @@
-import {RootObject} from '@model/entity/unspleash/RootObject';
-import {Method, Params, URLs} from '@services/configuration/config';
-import {fetchAPI} from '@services/configuration/MainService';
-import {UNSPLEASH_KEY} from '@env';
+import { RootObject } from '@model/entity/unspleash/RootObject';
+import { Method, RegexParams, UnsplashParams, URLs } from '@services/configuration/config';
+import { fetchAPI } from '@services/configuration/MainService';
+import { UNSPLEASH_KEY } from '@env';
 /**
  * Service class for interacting with the Unsplash API.
  */
@@ -23,20 +23,20 @@ export class UNSpleashService {
       fetchAPI({
         url:
           URLs.UNSPLEASH +
-          Params.Search +
-          Params.RegexOr +
-          Params.PerPage +
+          UnsplashParams.Search +
+          RegexParams.RegexOr +
+          UnsplashParams.PerPage +
           pre_page +
-          Params.RegexAnd +
-          Params.Page +
+          RegexParams.RegexAnd +
+          UnsplashParams.Page +
           page +
-          Params.RegexAnd +
-          Params.Query +
+          RegexParams.RegexAnd +
+          UnsplashParams.Query +
           query,
         method: Method.GET,
         params: {},
         headers: {
-          Authorization: Params.Authorization + UNSPLEASH_KEY,
+          Authorization: UnsplashParams.Authorization + UNSPLEASH_KEY,
         },
       })
         .then(data => {
