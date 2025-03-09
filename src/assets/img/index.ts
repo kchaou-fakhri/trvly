@@ -1,6 +1,6 @@
 export const IMAGES = {
   Point: require('./point.png'),
-  FajrBackground: require('./Fajr_bkg.png'),
+  FajrBackground: require('./fajr_bkg.png'),
   DhohrBackground: require('./dhohr_bkg.png'),
   AsrBackground: require('./asr_bkg.png'),
   MaghribBackground: require('./maghrib_bkg.png'),
