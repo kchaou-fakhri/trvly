@@ -10,8 +10,9 @@ import {useLocationPermission} from '@hooks/usePermission';
 import {COLORES} from '@trvlyUtils/Colors';
 
 const App = () => {
-  //useLocationPermission();
-  // useDeviceInfo();
+  useLocationPermission();
+  useDeviceInfo();
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
