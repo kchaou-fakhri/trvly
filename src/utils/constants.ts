@@ -34,7 +34,7 @@ export const Prayers = (timings: Timings) => [
   {
     name: 'Asr',
     next: 'Maghrib',
-    time: "15:52",
+    time: timings.Asr,
     nextTime: timings.Maghrib,
     image: IMAGES.AsrBackground
   },
@@ -53,3 +53,5 @@ export const Prayers = (timings: Timings) => [
     image: IMAGES.IchaBackground
   }
 ];
+
+export const ZERO = '0'
