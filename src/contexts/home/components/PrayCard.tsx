@@ -8,8 +8,10 @@ import {GlobalStyle, TextStyles} from '@trvlyUtils/GlobalStyle';
 import {useSelector} from 'react-redux';
 import {AppState} from '@redux/app_state';
 import {getCurrentDate, getFormattedTime} from '@helpers/GetTime';
-import {Prayers} from '@trvlyUtils/constants';
+import {Prayers, ZERO} from '@trvlyUtils/constants';
 import {Timer} from '@helpers/Timer';
+import {DATAs} from '@data/index';
+import { isNotEmpty } from '@trvlyUtils/Functions';
 
 export const PrayCard: React.FC = () => {
   const state = useSelector((state: AppState) => state.adhanState);
@@ -25,31 +27,37 @@ export const PrayCard: React.FC = () => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
+  const [message, setMessage] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
+  const getCurrentPrayer = () => {
     if (state && state.data?.data.timings) {
       const timings = state.data?.data.timings;
       const currentTime = getCurrentDate();
-      if (getFormattedTime(state.data.data.timings.Fajr) > currentTime) {
+      setIsMounted(true);
+      if (getFormattedTime(timings.Fajr) > currentTime) {
         setCurrent(Prayers(timings)[0]);
       } else if (
-        getFormattedTime(state.data.data.timings.Dhuhr) > currentTime
+        getFormattedTime(timings.Dhuhr) > currentTime
       ) {
         setCurrent(Prayers(timings)[1]);
-      } else if (getFormattedTime(state.data.data.timings.Asr) > currentTime) {
+      } else if (getFormattedTime(timings.Asr) > currentTime) {
         setCurrent(Prayers(timings)[2]);
       } else if (
-        getFormattedTime(state.data.data.timings.Maghrib) > currentTime
+        getFormattedTime(timings.Maghrib) > currentTime
       ) {
         setCurrent(Prayers(timings)[3]);
       } else {
         setCurrent(Prayers(timings)[4]);
       }
     }
+  };
+  useEffect(() => {
+    getCurrentPrayer();
   }, [state]);
 
   useEffect(() => {
-    if (current.time)
+    if (isNotEmpty(current.time)) {
       Timer(
         current.time,
         (differenceHours, differenceMinutes, differenceSeconds) => {
@@ -58,9 +66,20 @@ export const PrayCard: React.FC = () => {
           setSeconds(differenceSeconds);
         },
       );
+    }
   }, [current]);
 
-  // console.log(hours + ':' + minutes + ':' + minutes);
+  useEffect(() => {
+    if (hours === 0 && minutes === 0 && seconds === 0 && isMounted  ) {
+      setMessage(DATAs.EnTrns.txt_prayer);
+      setTimeout(() => {
+        setMessage(null);
+        getCurrentPrayer();
+        setIsMounted(false);
+      }, 10000);
+    }
+  }, [seconds]);
+
 
   return (
     <View style={styles.container}>
@@ -70,19 +89,23 @@ export const PrayCard: React.FC = () => {
           <View style={styles.info}>
             <Text style={[TextStyles.H4, styles.prayName]}>{current.name}</Text>
             <Text style={[TextStyles.H1, styles.prayTime]}>
-              {current.time}{' '}
+              {Number(current.time) < 10 ? ZERO + current.time : current.time}{' '}
               <Text style={[TextStyles.P, styles.prayTime]}>PM</Text>
             </Text>
             <Text style={[TextStyles.H5, styles.nextPray]}>Next Pray</Text>
             <Text style={[TextStyles.H3, styles.prayTime]}>
-              {current.nextTime}{' '}
+              {Number(current.nextTime) < 10
+                ? ZERO + current.nextTime
+                : current.nextTime}{' '}
               <Text style={[TextStyles.P, styles.prayTime]}>PM</Text>
             </Text>
           </View>
 
           <View style={styles.timer}>
             <Text style={[TextStyles.H3, styles.prayTime]}>
-              {`${hours}:${minutes}:${seconds}`}
+              {message || `${hours < 10 ? ZERO + hours : hours}:${
+                minutes < 10 ? ZERO + minutes : minutes
+              }:${seconds < 10 ? ZERO + seconds : seconds}`}
             </Text>
           </View>
         </View>
