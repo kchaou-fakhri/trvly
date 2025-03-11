@@ -1,11 +1,7 @@
 module.exports = {
   presets: ['module:@react-native/babel-preset'],
   plugins: [
-    "formatjs",
-    {
-      "idInterpolationPattern": "[sha512:contenthash:base64:6]",
-      "ast": true
-    },
+
     'react-native-reanimated/plugin',
     [
       'module:react-native-dotenv',
