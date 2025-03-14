@@ -9,12 +9,14 @@ import {useDeviceInfo} from '@hooks/useDeviceInfo';
 import {useLocationPermission} from '@hooks/usePermission';
 import {COLORES} from '@trvlyUtils/Colors';
 import { IntlProvider } from 'react-intl';
+import { TranslationMessages } from '@trvlyUtils/translation';
 
 const App = () => {
   useLocationPermission();
   useDeviceInfo();
-  const messages = {
-  };
+  
+  const locale = "fr";
+const messages  = TranslationMessages[locale] || TranslationMessages["en"];
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>
@@ -27,7 +29,8 @@ const App = () => {
               barStyle="dark-content"
               backgroundColor={COLORES.BACKGROUND.Primary}
             />
-            <MainNavigation />
+  
+  <MainNavigation />
           </SafeAreaView>
         </IntlProvider>
       </Provider>
