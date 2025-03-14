@@ -1,25 +1,26 @@
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useDeviceInfo} from '@hooks/useDeviceInfo';
 import FastImage from 'react-native-fast-image';
-import {IMAGES} from '@assets/img';
 import {COLORES} from '@trvlyUtils/Colors';
-import {GlobalStyle, TextStyles} from '@trvlyUtils/GlobalStyle';
+import {TextStyles} from '@trvlyUtils/GlobalStyle';
 import {useSelector} from 'react-redux';
 import {AppState} from '@redux/app_state';
 import {getCurrentDate, getFormattedTime} from '@helpers/GetTime';
 import {Prayers, ZERO} from '@trvlyUtils/constants';
 import {Timer} from '@helpers/Timer';
-import {DATAs} from '@data/index';
 import { isNotEmpty } from '@trvlyUtils/Functions';
+import { useIntl } from 'react-intl';
+import { TranslationPrayer } from '@trvlyUtils/translation/Translation';
+import { TranslationText } from '@components/TranslationText';
 
 export const PrayCard: React.FC = () => {
   const state = useSelector((state: AppState) => state.adhanState);
+  const intl = useIntl();
 
   //State
   const [current, setCurrent] = useState({
-    name: '',
-    next: '',
+    name: {defaultMessage: "", textTranslation: ""},
+    next: {defaultMessage: "", textTranslation: ""},
     time: '',
     nextTime: '',
     image: undefined,
@@ -71,7 +72,7 @@ export const PrayCard: React.FC = () => {
 
   useEffect(() => {
     if (hours === 0 && minutes === 0 && seconds === 0 && isMounted  ) {
-      setMessage(DATAs.EnTrns.txt_prayer);
+      setMessage(intl.formatMessage(TranslationPrayer.Prayer));
       setTimeout(() => {
         setMessage(null);
         getCurrentPrayer();
@@ -81,13 +82,14 @@ export const PrayCard: React.FC = () => {
   }, [seconds]);
 
 
+
   return (
     <View style={styles.container}>
       <FastImage source={current.image} style={styles.img} />
-      {state ? (
+      {state.data && isMounted ? (
         <View style={styles.infoContainer}>
           <View style={styles.info}>
-            <Text style={[TextStyles.H4, styles.prayName]}>{current.name}</Text>
+            <TranslationText style={[TextStyles.H4, styles.prayName]} textTranslation={current.name.textTranslation} defaultMessage={current.name.defaultMessage}  />
             <Text style={[TextStyles.H1, styles.prayTime]}>
               {Number(current.time) < 10 ? ZERO + current.time : current.time}{' '}
               <Text style={[TextStyles.P, styles.prayTime]}>PM</Text>

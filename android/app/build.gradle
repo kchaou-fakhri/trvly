@@ -119,7 +119,6 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation(project(':react-native-i18n'))
     implementation project(':react-native-vector-icons')
 
 }

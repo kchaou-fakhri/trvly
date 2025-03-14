@@ -1,5 +1,6 @@
 import { IMAGES } from "@assets/img";
 import { Timings } from "@model/entity/adhan/Timings";
+import { TranslationPrayer } from "./translation/Translation";
 
 export const CONSTANTS = {
   MAPBOX: {
@@ -18,36 +19,36 @@ export enum TrvlyPermissionStatus {
 
 export const Prayers = (timings: Timings) => [
   {
-    name: 'Fajr',
-    next: 'Dhohr',
+    name: TranslationPrayer.Fajr,
+    next: TranslationPrayer.Dhohr,
     time: timings.Fajr,
     nextTime: timings.Dhuhr,
     image: IMAGES.FajrBackground
   },
   {
-    name: 'Dhohr',
-    next: 'Asr',
+    name: TranslationPrayer.Dhohr,
+    next: TranslationPrayer.Asr,
     time: timings.Dhuhr,
     nextTime: timings.Asr,
     image: IMAGES.DhohrBackground
   },
   {
-    name: 'Asr',
-    next: 'Maghrib',
+    name: TranslationPrayer.Asr,
+    next: TranslationPrayer.Maghrib,
     time: timings.Asr,
     nextTime: timings.Maghrib,
     image: IMAGES.AsrBackground
   },
   {
-    name: 'Maghrib',
-    next: 'Isha',
+    name: TranslationPrayer.Maghrib,
+    next: TranslationPrayer.Isha,
     time: timings.Maghrib,
     nextTime: timings.Isha,
     image: IMAGES.MaghribBackground
   },
   {
-    name: 'Isha',
-    next: 'Fajr',
+    name: TranslationPrayer.Isha,
+    next: TranslationPrayer.Fajr,
     time: timings.Isha,
     nextTime: timings.Fajr,
     image: IMAGES.IchaBackground
