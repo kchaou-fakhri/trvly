@@ -1,6 +1,11 @@
-import { useIntl } from "react-intl";
+import { TranslationEntity, TranslationPrayer, TranslationTimeFormat } from "./Translation";
+
+export const Messages = {
+  en: require("./messages/en.json"),
+  ar: require("./messages/ar.json"),
+};
 
 export const TranslationMessages = {
-  en: require("./en.json"),
-  ar: require("./ar.json"),
-};
+  ...TranslationPrayer,
+  ...TranslationTimeFormat
+ }

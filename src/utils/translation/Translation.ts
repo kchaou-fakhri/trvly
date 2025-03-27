@@ -4,7 +4,8 @@ export interface TranslationEntity {
     defaultMessage: string;    
   }
 
-export const TranslationPrayer = {
+
+export  const TranslationPrayer = {
     Prayer: {
         textTranslation: "txt.prayer",
         defaultMessage: "The Prayer",
@@ -29,6 +30,23 @@ export const TranslationPrayer = {
         textTranslation: "txt.isha",
         defaultMessage: "Isha",
     },
+    NextPray: {
+        textTranslation: "txt.next.pray",
+        defaultMessage: "Next Pray",
+    },
 }
 
+export const TranslationTimeFormat = {
+    AM: {
+        textTranslation: "txt.time.am",
+        defaultMessage: "AM",
+    },
+    PM: {
+        textTranslation: "txt.time.pm",
+        defaultMessage: "PM",
+    },
+}
+
+  
+ 
 

@@ -4,5 +4,8 @@
     "txt.dhohr": "Dhohr",
     "txt.asr": "Asr",
     "txt.maghrib": "Maghrib",
-    "txt.isha": "Isha"
+    "txt.isha": "Isha",
+    "txt.next.pray": "Next Pray",
+    "txt.time.am": "AM",
+    "txt.time.pm": "PM"
 }
