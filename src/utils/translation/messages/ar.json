@@ -4,5 +4,8 @@
     "txt.dhohr": "الظهر",
     "txt.asr": "العصر",
     "txt.maghrib": "المغرب",
-    "txt.isha": "العشاء"
+    "txt.isha": "العشاء",
+    "txt.next.pray": "الصلاة التالية",
+    "txt.time.am": "صباحاً",
+    "txt.time.pm": "مساءً"
 }

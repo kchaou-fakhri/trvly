@@ -9,14 +9,14 @@ import {useDeviceInfo} from '@hooks/useDeviceInfo';
 import {useLocationPermission} from '@hooks/usePermission';
 import {COLORES} from '@trvlyUtils/Colors';
 import { IntlProvider } from 'react-intl';
-import { TranslationMessages } from '@trvlyUtils/translation';
+import { Messages } from '@trvlyUtils/translation';
 
 const App = () => {
   useLocationPermission();
   useDeviceInfo();
   
-  const locale = "fr";
-const messages  = TranslationMessages[locale] || TranslationMessages["en"];
+  const locale = "ar";
+const messages  = Messages[locale] || Messages["en"];
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <Provider store={store}>

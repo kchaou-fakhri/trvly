@@ -8,10 +8,10 @@ import {AppState} from '@redux/app_state';
 import {getCurrentDate, getFormattedTime} from '@helpers/GetTime';
 import {Prayers, ZERO} from '@trvlyUtils/constants';
 import {Timer} from '@helpers/Timer';
-import { isNotEmpty } from '@trvlyUtils/Functions';
-import { useIntl } from 'react-intl';
-import { TranslationPrayer } from '@trvlyUtils/translation/Translation';
-import { TranslationText } from '@components/TranslationText';
+import {isNotEmpty} from '@trvlyUtils/Functions';
+import {useIntl} from 'react-intl';
+import {TranslationText} from '@trvlyUtils/translation/components/TranslationText';
+import {TranslationMessages} from '@trvlyUtils/translation';
 
 export const PrayCard: React.FC = () => {
   const state = useSelector((state: AppState) => state.adhanState);
@@ -19,8 +19,8 @@ export const PrayCard: React.FC = () => {
 
   //State
   const [current, setCurrent] = useState({
-    name: {defaultMessage: "", textTranslation: ""},
-    next: {defaultMessage: "", textTranslation: ""},
+    name: {defaultMessage: '', textTranslation: ''},
+    next: {defaultMessage: '', textTranslation: ''},
     time: '',
     nextTime: '',
     image: undefined,
@@ -38,15 +38,11 @@ export const PrayCard: React.FC = () => {
       setIsMounted(true);
       if (getFormattedTime(timings.Fajr) > currentTime) {
         setCurrent(Prayers(timings)[0]);
-      } else if (
-        getFormattedTime(timings.Dhuhr) > currentTime
-      ) {
+      } else if (getFormattedTime(timings.Dhuhr) > currentTime) {
         setCurrent(Prayers(timings)[1]);
       } else if (getFormattedTime(timings.Asr) > currentTime) {
         setCurrent(Prayers(timings)[2]);
-      } else if (
-        getFormattedTime(timings.Maghrib) > currentTime
-      ) {
+      } else if (getFormattedTime(timings.Maghrib) > currentTime) {
         setCurrent(Prayers(timings)[3]);
       } else {
         setCurrent(Prayers(timings)[4]);
@@ -71,8 +67,8 @@ export const PrayCard: React.FC = () => {
   }, [current]);
 
   useEffect(() => {
-    if (hours === 0 && minutes === 0 && seconds === 0 && isMounted  ) {
-      setMessage(intl.formatMessage(TranslationPrayer.Prayer));
+    if (hours === 0 && minutes === 0 && seconds === 0 && isMounted) {
+      setMessage(intl.formatMessage(TranslationMessages.Prayer));
       setTimeout(() => {
         setMessage(null);
         getCurrentPrayer();
@@ -81,33 +77,49 @@ export const PrayCard: React.FC = () => {
     }
   }, [seconds]);
 
-
-
   return (
     <View style={styles.container}>
       <FastImage source={current.image} style={styles.img} />
       {state.data && isMounted ? (
         <View style={styles.infoContainer}>
           <View style={styles.info}>
-            <TranslationText style={[TextStyles.H4, styles.prayName]} textTranslation={current.name.textTranslation} defaultMessage={current.name.defaultMessage}  />
+            <TranslationText
+              style={[TextStyles.H4, styles.prayName]}
+              textTranslation={current.name.textTranslation}
+              defaultMessage={current.name.defaultMessage}
+            />
             <Text style={[TextStyles.H1, styles.prayTime]}>
               {Number(current.time) < 10 ? ZERO + current.time : current.time}{' '}
-              <Text style={[TextStyles.P, styles.prayTime]}>PM</Text>
+              {/* <TranslationText
+                textTranslation={TranslationMessages.AM.textTranslation}
+                defaultMessage={TranslationMessages.Prayer.defaultMessage}
+                style={[TextStyles.P, styles.prayTime]}
+              /> */}
             </Text>
-            <Text style={[TextStyles.H5, styles.nextPray]}>Next Pray</Text>
+            <TranslationText
+              style={[TextStyles.H5, styles.nextPray]}
+              textTranslation={TranslationMessages.NextPray.textTranslation}
+              defaultMessage={
+                TranslationMessages.NextPray.defaultMessage
+              }></TranslationText>
             <Text style={[TextStyles.H3, styles.prayTime]}>
               {Number(current.nextTime) < 10
                 ? ZERO + current.nextTime
                 : current.nextTime}{' '}
-              <Text style={[TextStyles.P, styles.prayTime]}>PM</Text>
+              {/* <TranslationText
+                textTranslation={TranslationMessages.PM.textTranslation}
+                defaultMessage={TranslationMessages.PM.defaultMessage}
+                style={[TextStyles.P, styles.prayTime]}
+              /> */}
             </Text>
           </View>
 
           <View style={styles.timer}>
             <Text style={[TextStyles.H3, styles.prayTime]}>
-              {message || `${hours < 10 ? ZERO + hours : hours}:${
-                minutes < 10 ? ZERO + minutes : minutes
-              }:${seconds < 10 ? ZERO + seconds : seconds}`}
+              {message ||
+                `${hours < 10 ? ZERO + hours : hours}:${
+                  minutes < 10 ? ZERO + minutes : minutes
+                }:${seconds < 10 ? ZERO + seconds : seconds}`}
             </Text>
           </View>
         </View>
